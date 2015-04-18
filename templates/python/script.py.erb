@@ -1,0 +1,40 @@
+# -*- coding: utf-8 -*-
+
+DESCRIPTION = """
+    Script file <%= @project_name %>
+
+    Author: Alexey Kolyanov, 2015
+
+"""
+
+import os
+import sys
+import logging
+import argparse
+
+logger = logging.getLogger('log')
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler(sys.stdout)
+ch.setFormatter(logging.Formatter('%(asctime)-15s\t%(levelname)s\t %(message)s'))
+logger.addHandler(ch)
+
+parser = argparse.ArgumentParser(description="<%= @project_name %>", epilog=DESCRIPTION)
+
+debugmode = False
+
+
+def main():
+    args = parser.parse_args()
+    if args.debug:
+        logger.setLevel(logging.DEBUG)
+    if args.quiet:
+        logger.setLevel(logging.ERROR)
+
+    pass  # TODO
+
+    return 0
+
+
+if __name__ == "__main__":
+    retval = main()
+    sys.exit(retval)

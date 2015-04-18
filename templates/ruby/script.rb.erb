@@ -1,0 +1,48 @@
+#!/bin/env ruby
+# encoding: utf-8
+
+fdescr = <<EODESC
+    Script file <%= @project_name %>
+
+    Author: Alexey Kolyanov, 2015
+
+EODESC
+
+require 'rubygems'
+require 'optparse'
+require 'fileutils'
+
+inputfile = nil
+outputfile = nil
+$debugmode = false
+$quiet = false
+
+# get command-line parameters
+OptionParser.new do |opts|
+    opts.banner = "Usage: ruby #{__FILE__} [options]"
+
+    opts.on('-i', '--input filename', 'Input file') { |v| inputfile = v }
+    opts.on('-o', '--output filename', 'Output file') { |v| outputfile = v }
+    opts.on('-X', '--debug', 'Enable debug mode') { $debugmode = true }
+    opts.on('-q', '--quiet', 'Disable output') { $quiet = true }
+
+end.parse!
+
+arg1 = ARGV.shift
+inputfile = arg1 if arg1
+arg1 = ARGV.shift
+outputfile = arg1 if arg1
+
+<% module_name = @project_name
+    module_name[0] = module_name[0].capitalize
+%>
+
+module <%= module_name %>; class << self
+
+    def main(inputfile: nil)
+        #
+    end
+
+end; end  # module <%= module_name %>
+
+<%= module_name %>::main(inputfile: inputfile)
