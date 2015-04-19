@@ -33,7 +33,7 @@ inputfile = arg1 if arg1
 arg1 = ARGV.shift
 outputfile = arg1 if arg1
 
-<% module_name = @project_name
+<% module_name = @project_name.dup
     module_name[0] = module_name[0].capitalize
 %>
 

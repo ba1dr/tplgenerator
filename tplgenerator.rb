@@ -42,8 +42,13 @@ appname = arg1 if arg1
 
 
 module TplGenerator; class << self
+    def getappdir(path)
+        path = File.readlink path while File.symlink? path
+        File.dirname(File.expand_path(path))
+    end
+
     CURDIR = Dir.getwd
-    APPDIR = File.dirname(File.expand_path(__FILE__))
+    APPDIR = TplGenerator.getappdir(__FILE__)
     TPLDIR = File.join(APPDIR, "templates")
 
     def get_tplist
