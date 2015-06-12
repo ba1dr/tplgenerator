@@ -9,6 +9,7 @@ DESCRIPTION = """
 
 import os
 import sys
+import yaml
 import logging
 import argparse
 
@@ -23,16 +24,34 @@ parser = argparse.ArgumentParser(description="<%= @project_name %>", epilog=DESC
 
 parser.add_argument('-d', '--debug', action='store_true', help='Enable debug output')
 parser.add_argument('-q', '--quiet', action='store_true', help='Quiet mode - outputs only errors')
+parser.add_argument('-c', '--config', help='Config file', default='settings.yaml')
+parser.add_argument('-i', '--inputfile', help='Input file')
+parser.add_argument('-o', '--outputfile', help='Output file')
 
 debugmode = False
+
+
+def get_config(cfgpath):
+    config = {}
+    if not os.path.exists(cfgpath):
+        if not os.path.exists(os.path.join(CUR_DIR, cfgpath)):
+            raise ValueError("Config file %s is not found!" % cfgpath)
+        cfgpath = os.path.join(CUR_DIR, cfgpath)
+    with open(cfgpath, 'r') as cfgf:
+        config = yaml.load(cfgf.read())
+    return config
 
 
 def main():
     args = parser.parse_args()
     if args.debug:
         logger.setLevel(logging.DEBUG)
+        debugmode = True
     if args.quiet:
         logger.setLevel(logging.ERROR)
+        debugmode = False
+
+    config = get_config(args.config)
 
     pass  # TODO
 
