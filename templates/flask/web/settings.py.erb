@@ -1,0 +1,75 @@
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+import logging
+import yaml
+# import redis
+
+
+SETTINGS_FILE = "/usr/local/etc/<%= @project_name %>.yaml"
+CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATES_DIR = os.path.join(CUR_DIR, 'templates')
+
+with open(os.path.join(SETTINGS_FILE), 'r') as cfile:
+    conf = yaml.load(cfile)
+
+""" Logger is configured on application level on start """
+# configure logging
+logger = logging.getLogger('log')
+default_logger = logger
+# see below: call of setup_logger() in globals
+
+# Redis connection: persistent
+redis_conn = None
+# see below: call of init_redis() in globals
+
+# db connection
+db_conn = None
+
+
+def setup_logger(debug=False):
+    """ Setup default logger """
+    global logger
+    loglevel = (conf['logging']['loglevel'] or 'INFO').strip().upper()
+    if loglevel == 'DEBUG':
+        debug = True
+    log_format = "%(asctime)s %(process)d %(levelname)s %(message)s"
+    if debug:
+        loglevel = "DEBUG"
+    logger.setLevel(loglevel)
+    # file logging
+    fh = logging.FileHandler(conf['logging']['logfile'])
+    fh.setLevel(loglevel)
+    fh.setFormatter(logging.Formatter(log_format))
+    logger.addHandler(fh)
+    if debug:
+        # console logging
+        ch = logging.StreamHandler(sys.stdout)
+        ch.setLevel(loglevel)
+        ch.setFormatter(logging.Formatter(log_format))
+        logger.addHandler(ch)
+    return logger
+
+setup_logger()
+
+
+def init_redis_conn(redisconfig):
+    global redis_client
+    redisdb = redisconfig.get('db') or 0
+    if redisconfig.get('unixsocket'):
+        redis_client = redis.StrictRedis(unix_socket_path=redisconfig.get('unixsocket'),
+                                         db=redisdb,
+                                         # decode_responses=True
+                                         )
+    else:
+        redis_client = redis.StrictRedis(
+            host=redisconfig['host'],
+            port=redisconfig['port'],
+            password=redisconfig['pass'],
+            db=redisdb,
+            # decode_responses=True, encoding='utf-8',
+        )
+    return redis_client
+
+# redis_client = init_redis_conn(config['redis'])

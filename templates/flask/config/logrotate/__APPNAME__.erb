@@ -1,0 +1,12 @@
+/var/log/<%= @project_name %>/<%= @project_name %>.log {
+    size 1
+    copytruncate
+    create
+    rotate 10
+    missingok
+#    postrotate
+#        timeext=`date -d '1 hour ago' "+%Y-%m-%d_%H"`
+#        timeext=$(date +%Y-%m-%d_%H)
+#        mv /var/log/<%= @project_name %>/<%= @project_name %>.log.1 /var/log/<%= @project_name %>/<%= @project_name %>_$timeext.log
+#    endscript
+}

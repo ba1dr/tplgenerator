@@ -1,0 +1,6 @@
+
+```
+sudo ln -s /directpath/config/nginx/<%= @project_name %>.conf /etc/nginx/sites-available/
+sudo ln -s /etc/nginx/sites-available/<%= @project_name %>.conf /etc/nginx/sites-enabled/
+sudo sh -c 'printf "<%= @project_name %>:$(openssl passwd -crypt MyPasswr)\n" > /etc/nginx/<%= @project_name %>_htpasswd'
+```

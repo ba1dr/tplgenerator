@@ -1,0 +1,6 @@
+PyYAML
+Jinja2
+Flask
+gunicorn
+requests
+# redis

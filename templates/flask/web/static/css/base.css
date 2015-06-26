@@ -1,0 +1,9 @@
+.brand
+{
+  background: url(/static/img/favicon.png) no-repeat left center;
+  background-size: 40px 40px;
+  background-position: 0px 5px;
+  padding-left: 40px;
+  height: 45px;
+  width: 200px;
+}

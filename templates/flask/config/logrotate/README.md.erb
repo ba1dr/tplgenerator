@@ -1,0 +1,6 @@
+logrotate does not work with symlinked configs
+
+```
+sudo cp /opt/<%= @project_name %>/config/logrotate/<%= @project_name %> /etc/logrotate.d/<%= @project_name %>
+sudo cp /etc/cron.daily/logrotate /etc/cron.hourly/logrotate
+```

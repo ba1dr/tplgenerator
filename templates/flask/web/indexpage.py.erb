@@ -1,0 +1,8 @@
+
+from webutils import render
+
+
+def get(request):
+    data = {}
+    retval = render("index.html", data)
+    return retval

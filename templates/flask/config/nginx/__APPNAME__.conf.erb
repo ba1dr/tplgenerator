@@ -1,0 +1,51 @@
+server {
+    listen 80;
+
+    # server_name 10.0.0.1 myserver.domain.tld;
+    access_log  /var/log/nginx/<%= @project_name %>-access.log;
+    error_log  /var/log/nginx/<%= @project_name %>-error.log;
+
+    proxy_intercept_errors on;
+    gzip on;
+    sendfile on;
+    #chunkin on;
+
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+
+    location /favicon.ico {
+        return 404;
+    }
+
+    # auth_basic "closed site";
+    # auth_basic_user_file /etc/nginx/<%= @project_name %>_htpasswd;
+
+    location /static {
+        root   /opt/<%= @project_name %>;
+        access_log  off;
+    }
+
+    location / {
+        try_files $uri @gunicorn;
+    }
+
+    location @gunicorn {
+        #proxy_pass http://127.0.0.1:8000;
+        proxy_pass http://unix:/tmp/<%= @project_name %>_gunicorn.socket;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 600;
+        proxy_connect_timeout 600;
+        fastcgi_read_timeout 600s;
+
+        client_max_body_size 1m;
+    }
+
+    client_header_timeout 600s;
+    client_body_timeout 600s;
+    send_timeout 600s;
+
+}

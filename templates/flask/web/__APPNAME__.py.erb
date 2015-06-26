@@ -1,0 +1,49 @@
+# -*- coding: utf-8 -*-
+
+"""
+    Author: Alexey Kolyanov, 2015
+
+"""
+
+import os
+import functools
+from flask import Flask, request, make_response
+import jinja2
+
+from settings import setup_logger, default_logger, CUR_DIR, TEMPLATES_DIR
+import indexpage
+
+debugmode = False
+app = Flask(__name__)
+logger = default_logger
+
+
+def buildapp(*args, **kwargs):
+    debugmode = kwargs.get('debug')
+    logger = setup_logger(debug=debugmode)
+    logger.debug("Started")
+    return app
+
+
+def saferesp(func):
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        retval = None
+        try:
+            retval = func(*args, **kwargs)
+        except Exception as eee:
+            logger.exception("Exception(%s) in function %s" % (type(eee), func.__name__))
+            data = {'errordata': ''}
+            jinja_env = jinja2.Environment(
+                loader=jinja2.FileSystemLoader(TEMPLATES_DIR),
+                autoescape=False)
+            rtemplate = jinja_env.get_template('error.html')
+            retval = rtemplate.render(**data)
+        return retval
+    return inner
+
+
+@app.route('/')
+@saferesp
+def index():
+    return indexpage.get(request)

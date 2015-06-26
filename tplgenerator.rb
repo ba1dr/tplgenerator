@@ -77,6 +77,7 @@ module TplGenerator; class << self
             next if relpath == '.' or relpath == '.' or relpath.start_with? '.git/' or relpath.start_with? '.svn/'
             next if tp[:ignore_files].detect {|ff| ff == relpath}
             newpath = File.join(proj_dir, relpath)
+            newpath.sub!('__APPNAME__', proj_name)
             if File.directory? fulltppath
                 FileUtils.mkdir_p(newpath)
                 puts "Created directory #{newpath}"

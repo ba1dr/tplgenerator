@@ -1,0 +1,10 @@
+# Config file
+logging:
+    loglevel: INFO
+    logfile: /var/log/<%= @project_name %>/<%= @project_name %>.log
+redis:
+    unixsocket: /var/run/redis/redis.sock
+    host: localhost
+    port: 6379
+    db: 3
+    pass: null
