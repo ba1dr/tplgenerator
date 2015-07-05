@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block intro %}
+<div class="intro-md intro-home">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                Almost Finished
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block breadcrumb %}
+<li><a href="{% url 'home' %}">Home</a></li>
+<li class="active">Confirm Email</li>
+{% endblock %}
+
+{% block content %}
+
+<p class="text-center">
+Please <b>confirm your email</b> to finalize your account.
+</p>
+
+<p class="text-center">
+If you did not receive an email, please check your <b>spam</b> folder.
+</p>
+
+{% endblock %}

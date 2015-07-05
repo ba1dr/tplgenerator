@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{{ user.get_absolute_url }}" class="btn btn-default">View Profile</a>
+<hr />
+Hello, {{ user.get_identification }}!
+{% endblock %}

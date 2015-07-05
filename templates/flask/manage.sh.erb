@@ -26,6 +26,8 @@ setup() {
     ! [ -d "$LOGDIR" ] && sudo mkdir -p $LOGDIR
     sudo chown -R $USER: $LOGDIR
     sudo chmod -R a+rwX $LOGDIR
+
+    coffee --compile $WORK_DIR/
 }
 
 case $cmd in

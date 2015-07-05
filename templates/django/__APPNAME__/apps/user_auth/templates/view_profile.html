@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{% url 'view-profile' username=user.username %}">Information</a></li>
+            <li><a href="{% url 'change_password' %}">Change Password</a></li>
+            <li><a href="{% url 'edit-avatar' %}">Edit Profile Picture</a></li>
+        </ul>
+
+        <div class="col-md-offset-3 col-md-6">
+            <h1 class="page-header">View Profile <small>{{ user.get_identification }}</small></h1>
+
+            <a href="{{ user.get_edit_url }}" class="btn btn-default">Edit Profile</a>
+
+            <hr />
+
+            <ul class="list-group">
+                <!-- Username -->
+                <li class="list-group-item">
+                <h4 class="list-group-item-heading"><strong>Username:</strong></h4>
+                    <p class="list-group-item-text">{{ selected_user.username }}</p>
+                </li>
+
+                <!-- Email -->
+                <li class="list-group-item">
+                    <h4 class="list-group-item-heading"><strong>Email:</strong></h4>
+                    <p class="list-group-item-text">{{ selected_user.email }}</p>
+                </li>
+
+                {% if selected_user.first_name and selected_user.last_name %}
+                <!-- Name -->
+                <li class="list-group-item">
+                    <h4 class="list-group-item-heading"><strong>Name:</strong></h4>
+                    <p class="list-group-item-text">{{ selected_user.first_name }} {{ selected_user.last_name }}</p>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

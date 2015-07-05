@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load imagekit %}
+
+{% block content %}
+    <div class="row">
+
+        <ul class="nav nav-tabs">
+            <li><a href="{% url 'view-profile' username=user.username %}">Information</a></li>
+            <li><a href="{% url 'change_password' %}">Change Password</a></li>
+            <li class="active"><a href="{% url 'edit-avatar' %}">Edit Profile Picture</a></li>
+        </ul>
+
+        <div class="col-md-offset-3 col-md-6">
+            <h1 class="page-header">Update Profile Image</h1>
+
+            {% if not user.avatar %}
+                <form role="form" method="post" enctype="multipart/form-data" action="{% url 'edit-avatar' %}">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-default">Save</button>
+                </form>
+            {% else %}
+                <img src="{{ user.avatar.url }}" height="100" width="100" alt="Profile Picture" />
+                <a href="{% url 'remove-avatar' %}" class="btn btn-danger">Remove Avatar</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
