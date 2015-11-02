@@ -13,7 +13,6 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # CORE SETTINGS
 DEBUG = False
-TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = []
 ROOT_URLCONF = '<%= @project_name %>.urls'
 WSGI_APPLICATION = '<%= @project_name %>.wsgi.application'
@@ -27,6 +26,11 @@ ADMINS = (
 
 # APP DECLARATIONS
 DJANGO_APPS = (
+    # 'admin_tools',
+    # 'admin_tools.theming',
+    # 'admin_tools.menu',
+    # 'admin_tools.dashboard',
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -36,7 +40,6 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    'suit',
     'crispy_forms',
     'registration',
     'imagekit',
@@ -86,6 +89,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # TEMPLATES
 TEMPLATES = [
     {
+        'TEMPLATE_DEBUG': DEBUG,
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,

@@ -15,7 +15,7 @@ def authenticated_redirect(view_func=None, path=None):
         @authenticated_redirect(path='home')
     """
 
-    default_path = 'dashboard'
+    default_path = 'home'
 
     if view_func is None:
         return functools.partial(authenticated_redirect, path=path)

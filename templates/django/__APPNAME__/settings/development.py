@@ -4,7 +4,7 @@ Development Settings
 from .base import *
 
 DEBUG = True
-TEMPLATE_DEBUG = True
+# TEMPLATE_DEBUG = True
 
 APPS = (
     'django_extensions',

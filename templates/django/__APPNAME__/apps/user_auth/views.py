@@ -69,8 +69,8 @@ def remove_avatar(request):
     try:
         if os.path.isfile(file_path):
             os.unlink(file_path)
-    except Exception, e:
-        print e
+    except Exception as e:
+        print(e)
 
     request.user.avatar = None
     request.user.save()

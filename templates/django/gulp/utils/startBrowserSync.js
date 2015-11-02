@@ -5,7 +5,7 @@ var gulp        = require('gulp');
 var gutil       = require('gulp-util');
 
 var bsConfig = config.browserSync.all;
-var mode = config.browserSyncMode + "Options";
+var mode = config.browserSync.mode + "Options";
 
 _.assign(bsConfig, config.browserSync[mode]);
 

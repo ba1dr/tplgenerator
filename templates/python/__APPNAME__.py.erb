@@ -3,7 +3,7 @@
 DESCRIPTION = """
     Script file <%= @project_name %>
 
-    Author: Alexey Kolyanov, 2015
+    Author: Alexey Kolyanov, <%= Time.now.year %>
 
 """
 
@@ -43,6 +43,7 @@ def get_config(cfgpath):
 
 
 def main():
+    global debugmode
     args = parser.parse_args()
     if args.debug:
         logger.setLevel(logging.DEBUG)

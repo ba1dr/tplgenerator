@@ -1,0 +1,14 @@
+
+{% if style == 'table' %}
+    {{ form.non_field_errors }}
+    <table class="table">
+    {% for f in form %}
+    <tr><td class="leftcol">
+        {{ f.errors }} {{ f.label_tag}}</td>
+        <td class="rightcol">{{ f }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    {{ form.as_div }}
+{% endif %}

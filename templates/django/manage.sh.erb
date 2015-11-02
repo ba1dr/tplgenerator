@@ -26,7 +26,7 @@ case $cmd in
         DAEMONFLAG="-D"
         STARTMSG="daemon"
         [ "$param1" = "--debug" ] && DAEMONFLAG="" && STARTMSG="interactive"
-        sudo -u $USER sh -c "cd $WORK_DIR; $PYTHON $GUNICORN -c $CUR_DIR/config/gunicorn/gunicorn.conf.py --chdir $WORK_DIR <%= @project_name %>.wsgi:application $DAEMONFLAG"
+        sudo -u $USER sh -c "cd $WORK_DIR; $PYTHON -W ignore $GUNICORN -c $CUR_DIR/config/gunicorn/gunicorn.conf.py --chdir $WORK_DIR <%= @project_name %>.wsgi:application $DAEMONFLAG"
         if [ $? -ne 0 ]; then
             echo "ERROR starting gunicorn"
             exit 127

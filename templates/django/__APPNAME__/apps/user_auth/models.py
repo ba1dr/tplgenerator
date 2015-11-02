@@ -53,6 +53,20 @@ class Account(AbstractBaseUser):
         return self.email
 
     @property
+    def is_superuser(self):
+        return self.is_admin
+
+    @property
+    def is_staff(self):
+        return self.is_admin
+
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
+
+    def has_module_perms(self, app_label):
+        return self.is_admin
+
+    @property
     def date_joined(self):
         return self.created_at
 
@@ -72,4 +86,4 @@ class Account(AbstractBaseUser):
     @models.permalink
     def get_absolute_url(self):
         """Return absolute link"""
-        return ('view-profile', (), {'username':  self.username})
+        return ('view-profile', (), {'username': self.username})
