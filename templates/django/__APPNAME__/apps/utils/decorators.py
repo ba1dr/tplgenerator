@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import functools
 
 from django.shortcuts import redirect

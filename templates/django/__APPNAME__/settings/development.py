@@ -29,3 +29,6 @@ DATABASES = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+BROKER_URL = 'sqla+sqlite:///celery_brokerdb.sqlite'
+CELERY_RESULT_BACKEND = 'db+sqlite:///celery_resultsdb.sqlite'

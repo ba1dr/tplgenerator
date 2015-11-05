@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.conf.urls import patterns, include, url
 from django.views.generic.base import TemplateView
 
@@ -7,7 +9,8 @@ from registration.forms import RegistrationFormUniqueEmail
 from utils.decorators import authenticated_redirect
 
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url(r'^login/$', 'user_auth.views.auth_login', name='login'),
     url(r'^logout/$', 'user_auth.views.auth_logout', name='logout'),
     url(r'profile/edit/$', 'user_auth.views.edit_profile', name='edit-profile'),
@@ -83,9 +86,9 @@ urlpatterns = patterns('',
     ),
     url(
         r'^register/email_sent/$',
-       TemplateView.as_view(
-           template_name='user_auth/registration/complete.html'
-       ),
-       name='registration_complete'
+        TemplateView.as_view(
+            template_name='user_auth/registration/complete.html'
+        ),
+        name='registration_complete'
     ),
 )
