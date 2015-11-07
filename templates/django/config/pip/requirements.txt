@@ -10,7 +10,7 @@ django-admin-tools
 django
 django-suit
 django-registration-redux==1.1
-django-crispy-forms==1.4.0
+django-crispy-forms==1.5.2
 django-imagekit==3.2.6
 django_extensions
 Werkzeug

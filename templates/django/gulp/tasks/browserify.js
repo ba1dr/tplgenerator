@@ -4,6 +4,7 @@ var browserify      = require('browserify');
 var bundleLogger    = require('../utils/bundleLogger');
 var config          = require('../config');
 var gulp            = require('gulp');
+var glob            = require('glob');
 var gutil           = require('gulp-util');
 var handleErrors    = require('../utils/handleErrors');
 var isWatching      = require('../utils/isWatching');
@@ -12,7 +13,7 @@ var watchify        = require('watchify');
 
 var production = !!argv.production;
 
-gulp.task('browserify', function(callback) {
+gulp.task('browserify', ['coffee'], function(callback) {
     var bundleQueue = config.browserify.bundleConfigs.length;
 
     var browserifyThis = function(bundleConfig) {
@@ -20,7 +21,7 @@ gulp.task('browserify', function(callback) {
             cache: {},
             packageCache: {},
             fullPaths: true,
-            entries: bundleConfig.entries,
+            entries: glob.sync(bundleConfig.entries),
             extensions: config.browserify.extensions,
             transform: config.browserify.transform,
             debug: production ? false : true

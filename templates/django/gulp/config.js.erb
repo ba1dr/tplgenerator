@@ -48,8 +48,8 @@ module.exports = {
     // Compile our Coffee files
     coffee: {
         src: [
-            src + 'coffee/app.coffee',
-            src + 'coffee/**/*.coffee'
+            src + 'coffee/*.coffee',
+            src + 'coffee/**/*.coffee',
         ],
         dest: src + 'js',
         settings: {
@@ -76,7 +76,7 @@ module.exports = {
         transform: [],
         bundleConfigs: [
             {
-              entries: src + '/js/app.js',
+              entries: src + 'js/*.js',
               dest: dest + '/js',
               outputName: 'app.js'
             }
