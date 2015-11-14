@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 from django import forms
 from django.template.loader import render_to_string
@@ -12,12 +11,18 @@ class ImprovedForm(object):
         for fname in self.fields:
             if isinstance(self.fields[fname], forms.fields.BooleanField):
                 self.fields[fname].widget = CheckboxToggleWidget()
-            elif isinstance(self.fields[fname], forms.fields.CharField):
+            elif isinstance(self.fields[fname], (forms.fields.CharField, forms.fields.IntegerField, )):
                 placeholder = "This field is required" if self.fields[fname].required else self.fields[fname].help_text
                 css_class = ""
-                self.fields[fname].widget = BTSInputWidget(max_length=self.fields[fname].max_length,
-                                                           placeholder=placeholder, css_class=css_class,
-                                                           error_messages=placeholder)
+                widget_args = {
+                    'placeholder': placeholder, 'css_class': css_class,
+                    'error_messages': placeholder
+                }
+                if isinstance(self.fields[fname], forms.fields.IntegerField):
+                    widget_args['attrs'] = {'type': 'number'}
+                if isinstance(self.fields[fname], forms.fields.CharField):
+                    widget_args['max_length'] = self.fields[fname].max_length
+                self.fields[fname].widget = BTSInputWidget(**widget_args)
 
     def as_div(self):
         form_style = 'inline'

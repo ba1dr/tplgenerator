@@ -13,6 +13,9 @@ django-registration-redux==1.1
 django-crispy-forms==1.5.2
 django-imagekit==3.2.6
 django_extensions
+django-debug-toolbar
+# git+https://github.com/djsutho/django-debug-toolbar-request-history
+# django-storages==1.1.8
 Werkzeug
 
 # celery

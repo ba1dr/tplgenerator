@@ -1,0 +1,65 @@
+#!/bin/sh
+
+CUR_DIR=$(dirname $(readlink -f $0))
+BASE_DIR=/opt/<%= @project_name %>
+LOG_DIR=/var/log/<%= @project_name %>
+CFGDIR=/usr/local/etc/
+CFGFILE="<%= @project_name %>.yaml"
+PROJ_USER=<%= @project_name %>
+# PYTHON=python
+PYTHON=python3
+PIP=pip3
+
+# ---
+
+[ "$PYTHON" -eq "python3" ] && PIP=pip3
+
+# directories/permissions
+sudo mkdir -p $BASE_DIR
+sudo chown -R $PROJ_USER: $BASE_DIR
+sudo chmod -R a+rwX $BASE_DIR
+sudo chmod -R -t $BASE_DIR
+
+sudo chmod a+rwX /tmp
+sudo chmod -t /tmp
+
+sudo mkdir -p $LOG_DIR
+sudo chown -R $PROJ_USER: $LOG_DIR
+sudo chmod -R a+rwX $LOG_DIR
+sudo chmod -R -t $LOG_DIR
+
+sudo service apache2 stop
+sudo update-rc.d -f apache2 disable
+
+sudo apt-get update
+sudo apt-get install git nginx
+sudo apt-get install $PYTHON $PYTHON-dev $PYTHON-yaml
+
+cd /tmp/
+wget https://bootstrap.pypa.io/get-pip.py
+$PYTHON get-pip.py
+cd -
+
+sudo $PIP install ipython
+
+sudo apt-get install libxml2-dev libxslt-dev libjpeg-dev libpng12-dev libfreetype6-dev zlibc zlib1g-dev
+
+# sass
+# coffee
+# npm install
+
+cd $BASE_DIR
+# git clone ! HERE get code
+
+# sudo $PIP install -r config/pip/requirements.txt
+
+sudo rm /etc/nginx/sites-enabled/default
+sudo ln -s $BASE_DIR/config/nginx/<%= @project_name %>.conf /etc/nginx/sites-available/
+sudo ln -s /etc/nginx/sites-available/<%= @project_name %>.conf /etc/nginx/sites-enabled/
+
+# -- HERE CREATE <%= @project_name %>/settings/local.py
+
+$PYTHON ./manage.py syncdb
+$PYTHON ./manage.py collectstatic --noinput
+
+sudo service nginx restart

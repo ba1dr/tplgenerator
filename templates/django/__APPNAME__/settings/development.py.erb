@@ -3,6 +3,13 @@ Development Settings
 """
 from .base import *
 
+<%
+    o = [('a'..'z'), ('A'..'Z'), ('0'..'9'), "!@#$%^&*():".split('')].map { |i| i.to_a }.flatten
+    randkey = (0...50).map { o[rand(o.length)] }.join
+%>
+
+SECRET_KEY = '<%= randkey %>'
+
 DEBUG = True
 # TEMPLATE_DEBUG = True
 

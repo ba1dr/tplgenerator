@@ -7,6 +7,7 @@
 // Define Global Variables for our main object
 var dest = './<%= @project_name %>/public/';
 var src = './<%= @project_name %>/dev/';
+var bootswatch_theme = 'spacelab';
 
 module.exports = {
     // Define module variables for easy access to source and destination dirs
@@ -62,7 +63,7 @@ module.exports = {
         src: src + 'img',
         dest: dest + 'img',
         // processImages: /\.(gif|jpg|jpeg|tiff|png)$/i,
-        processImages: "*.{gif,jpg,jpeg,tiff,png,svg}",
+        processImages: "*.{ico,gif,jpg,jpeg,tiff,png,svg}",
         imageminOptions: {
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
@@ -107,11 +108,12 @@ module.exports = {
             'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
             'node_modules/bootstrap-switch/dist/js/bootstrap-switch.min.js',
             "node_modules/select2/dist/js/select2.full.min.js",
-            "node_modules/jquery-form/jquery.form.js"
+            "node_modules/jquery-form/jquery.form.js",
+            "node_modules/js-cookie/src/js.cookie.js"
         ],
         css: [
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
-            'node_modules/bootswatch/cerulean/bootstrap.min.css',
+            'node_modules/bootswatch/' + bootswatch_theme + '/bootstrap.min.css',
             'node_modules/font-awesome/css/font-awesome.min.css',
             'node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
             "node_modules/select2/dist/css/select2.min.css"
