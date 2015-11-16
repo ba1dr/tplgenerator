@@ -1,5 +1,6 @@
 var config  = require('../config').third_party;
 var gulp    = require('gulp');
+var uglify  = require('gulp-uglify');
 var concat  = require('gulp-concat');
 
 gulp.task('third_party', function () {
@@ -8,7 +9,7 @@ gulp.task('third_party', function () {
         .pipe(gulp.dest(config.dest.css));
 
     gulp.src(config.js)
-        .pipe(concat('dependencies.js'))
+        .pipe(concat('dependencies.js')).pipe(uglify())
         .pipe(gulp.dest(config.dest.js));
 
     gulp.src(config.fonts)

@@ -19,3 +19,16 @@
 .open .dropdown-menu {
     display: block !important;
 }
+
+.form-group .select2.select2-container {
+    position: relative;
+    width: 100% !important;
+    display: table-cell;
+}
+.form-group .select2.select2-container span.selection .select2-selection--single{
+    height: 100% !important;
+}
+
+.form-group .bootstrap-switch {
+    margin: 2px 4px;
+}
