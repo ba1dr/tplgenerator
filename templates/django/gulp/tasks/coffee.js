@@ -7,7 +7,8 @@ var handleErrors = require('../utils/handleErrors');
 
 gulp.task('coffee', function () {
     return gulp.src(config.src)
-        .pipe(coffee(config.settings)).pipe(uglify())
+        .pipe(coffee(config.settings))
+        // .pipe(uglify())  // disable for debug, enable for production
         .on('error', handleErrors)
         .pipe(gulp.dest(config.dest))
         .pipe(browserSync.reload({stream:true}));

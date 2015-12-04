@@ -9,7 +9,8 @@ gulp.task('third_party', function () {
         .pipe(gulp.dest(config.dest.css));
 
     gulp.src(config.js)
-        .pipe(concat('dependencies.js')).pipe(uglify())
+        .pipe(concat('dependencies.js'))
+        // .pipe(uglify())  // disable for debug, enable for production
         .pipe(gulp.dest(config.dest.js));
 
     gulp.src(config.fonts)

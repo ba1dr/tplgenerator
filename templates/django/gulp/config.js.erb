@@ -7,6 +7,11 @@
 // Define Global Variables for our main object
 var dest = './<%= @project_name %>/public/';
 var src = './<%= @project_name %>/dev/';
+/* Bootswatch themes:
+default cerulean cosmo cyborg darkly flatly
+journal lumen paper readable sandstone
+simplex slate spacelab superhero united yeti  
+*/
 var bootswatch_theme = 'spacelab';
 
 module.exports = {
@@ -109,7 +114,8 @@ module.exports = {
             'node_modules/bootstrap-switch/dist/js/bootstrap-switch.min.js',
             "node_modules/select2/dist/js/select2.full.min.js",
             "node_modules/jquery-form/jquery.form.js",
-            "node_modules/js-cookie/src/js.cookie.js"
+            "node_modules/js-cookie/src/js.cookie.js",
+            // "node_modules/jquery-mask-plugin/dist/jquery.mask.min.js"
         ],
         css: [
             'node_modules/bootstrap/dist/css/bootstrap.min.css',

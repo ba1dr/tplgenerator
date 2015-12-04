@@ -15,6 +15,9 @@ import os
 import yaml
 from .local import *
 
+if not os.path.exists(LOCAL_SETTINGS_FILE):
+    raise Exception("Local setting sile %s not found!" % LOCAL_SETTINGS_FILE)
+
 with open(LOCAL_SETTINGS_FILE, 'r') as sf:
     ysettings = yaml.load(sf.read())
 

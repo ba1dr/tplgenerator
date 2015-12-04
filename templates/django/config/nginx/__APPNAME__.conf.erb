@@ -5,6 +5,9 @@ server {
     gzip on;
     sendfile on;
 
+    error_page 500 502 503 /50x.html;
+    error_page 404 /404.html;
+
     location / {
         # auth_basic "<%= @project_name %>";
         # auth_basic_user_file /etc/nginx/<%= @project_name %>_passwd;

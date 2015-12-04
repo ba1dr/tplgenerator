@@ -89,7 +89,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # TEMPLATES
 TEMPLATES = [
     {
-        'TEMPLATE_DEBUG': DEBUG,
+        # 'TEMPLATE_DEBUG': DEBUG,
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
@@ -109,5 +109,6 @@ TEMPLATES = [
 from .logging_settings import LOGGING
 
 # APP SPECFIC SETTINGS
+LOCAL_SETTINGS_FILE = '/usr/local/etc/<%= @project_name %>.yaml'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 ACCOUNT_ACTIVATION_DAYS = 7

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.forms import CheckboxInput, TextInput
-from django.forms.widgets import Widget
-from django.forms.fields import Field
+from django.forms.widgets import Widget, NumberInput
+from django.forms.fields import Field, CharField
 from django.forms.utils import flatatt
 from django.utils.html import format_html
 from django.utils.encoding import force_text
@@ -24,7 +24,18 @@ class CheckboxToggleWidget(CheckboxInput):
         self.attrs['data-off-text'] = off_text or attrs.get('data-off-text') or 'No'
 
 
-class BTSInputWidget(TextInput):
+class BTSInputMixin(object):
+    def set_class(self, newclass):
+        # adds CSS class for the field's widget
+        classes = list(c for c in self.attrs.get('class', '').split(' ') if c)
+        self.attrs['class'] = ' '.join(set(classes + newclass.split(' ')))
+
+    def unset_class(self, oldclass):
+        # adds CSS class for the field's widget
+        classes = list(c for c in self.attrs.get('class', '').split(' ') if c)
+        if oldclass in classes:
+            classes.remove(oldclass)
+        self.attrs['class'] = ' '.join(set(classes))
 
     def __init__(self, *args, **kwargs):
         maxlength = kwargs.pop('max_length', None)
@@ -32,7 +43,9 @@ class BTSInputWidget(TextInput):
         css_class = kwargs.pop('css_class', '')
         error_messages = kwargs.pop('error_messages', '')
         super().__init__(*args, **kwargs)
-        self.attrs['class'] = self.attrs.get('class', '') + ' form-control ' + css_class
+        self.set_class('form-control')
+        if css_class:
+            self.set_class(css_class)
         if maxlength:
             self.attrs['maxlength'] = maxlength
         if placeholder:
@@ -41,9 +54,33 @@ class BTSInputWidget(TextInput):
         self.attrs['data-content'] = error_messages
 
 
+class BTSInputWidget(BTSInputMixin, TextInput):
+    pass
+
+
+class BTSNumInputWidget(BTSInputMixin, NumberInput):
+    input_type = 'text'
+
+    def value_from_datadict(self, data, files, name):
+        """
+        Given a dictionary of data and this widget's name, returns the value
+        of this widget. Returns None if it's not provided.
+        """
+        retval = data.get(name, None)
+        if retval and isinstance(retval, str):
+            retval = retval.replace(',', '')  # we assume it was formatting addon
+        return retval
+
+
 class PlainTextWidget(Widget):
 
+    def set_class(self, newclass):
+        # adds CSS class for the field's widget
+        classes = list(c for c in self.attrs.get('class', '').split(' ') if c)
+        self.attrs['class'] = ' '.join(set(classes + newclass.split(' ')))
+
     def __init__(self, *args, **kwargs):
+        self.attrs = {}
         self.tag = kwargs.pop('tag', None)
         self.safe_text = kwargs.pop('safe_text', None)
         # extended text, maybe with additional formatting, will replace value
@@ -65,11 +102,11 @@ class PlainTextWidget(Widget):
 class PlainTextField(Field):
     widget = PlainTextWidget
 
-    def __init__(self, tag='span', safe_text=True, html_text=None, *args, **kwargs):
+    def __init__(self, required=False, tag='span', safe_text=True, html_text=None, *args, **kwargs):
         self.tag = tag
         self.safe_text = safe_text
         self.html_text = html_text  # extended text, maybe with additional formatting, will replace value
-        super().__init__(*args, **kwargs)
+        super().__init__(required, *args, **kwargs)
 
     def widget_attrs(self, widget):
         attrs = super().widget_attrs(widget)

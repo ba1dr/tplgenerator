@@ -30,7 +30,7 @@ class ProfileForm(forms.Form):
         return email
 
     def save(self):
-        for field, value in self.cleaned_data.iteritems():
+        for field, value in self.cleaned_data.items():
             if field in self.base_fields:
                 setattr(self.user, field, value)
 
