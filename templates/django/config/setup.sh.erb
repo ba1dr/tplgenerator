@@ -62,6 +62,11 @@ sudo ln -s /etc/nginx/sites-available/<%= @project_name %>.conf /etc/nginx/sites
 
 # -- HERE CREATE <%= @project_name %>/settings/local.py
 
+# fix permissions if were broken
+sudo chown -R $PROJ_USER: $BASE_DIR
+sudo chmod -R a+rwX $BASE_DIR
+sudo chmod -R -t $BASE_DIR
+
 $PYTHON ./manage.py syncdb
 $PYTHON ./manage.py collectstatic --noinput
 
