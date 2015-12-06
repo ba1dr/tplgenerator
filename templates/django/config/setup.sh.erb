@@ -14,6 +14,9 @@ PIP=pip3
 
 [ "$PYTHON" -eq "python3" ] && PIP=pip3
 
+sudo adduser $PROJ_USER
+sudo adduser $PROJ_USER sudo
+
 # directories/permissions
 sudo mkdir -p $BASE_DIR
 sudo chown -R $PROJ_USER: $BASE_DIR
@@ -37,7 +40,7 @@ sudo apt-get install $PYTHON $PYTHON-dev $PYTHON-yaml
 
 cd /tmp/
 wget https://bootstrap.pypa.io/get-pip.py
-$PYTHON get-pip.py
+sudo $PYTHON get-pip.py
 cd -
 
 sudo $PIP install ipython

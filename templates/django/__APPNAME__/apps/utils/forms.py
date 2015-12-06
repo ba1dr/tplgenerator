@@ -3,7 +3,7 @@ from django import forms
 from django.template.loader import render_to_string
 from django.forms.extras.widgets import SelectDateWidget
 
-from utils.widgets import CheckboxToggleWidget, BTSInputWidget, BTSNumInputWidget
+from utils.widgets import CheckboxToggleWidget, BTSInputWidget, BTSNumInputWidget, BTSPasswordWidget
 
 
 class ImprovedForm(object):
@@ -22,12 +22,17 @@ class ImprovedForm(object):
         self.fields[field_name].widget.attrs['class'] = self.add_class(field_name, newclass)
 
     def reinit_widgets(self):
-        super(ImprovedForm, self).__init__(*args, **kwargs)
         for fname in self.fields:
+            if False:  # debug
+                print("field %s: type %s, widget %s" %
+                      (fname, type(self.fields[fname]), type(self.fields[fname].widget)))
             if isinstance(self.fields[fname].widget, forms.HiddenInput):
                 continue
             prev_widget_args = self.fields[fname].widget.attrs
             widget_args = {'attrs': prev_widget_args}
+            is_password = False
+            if isinstance(self.fields[fname].widget, forms.PasswordInput):
+                is_password = True
             if isinstance(self.fields[fname], forms.fields.BooleanField):
                 widget_args.update({
                     #
@@ -47,8 +52,13 @@ class ImprovedForm(object):
                     self.fields[fname].widget = BTSNumInputWidget(**widget_args)
                 elif isinstance(self.fields[fname], forms.fields.CharField):
                     widget_args['max_length'] = self.fields[fname].max_length
-                    self.fields[fname].widget = BTSInputWidget(**widget_args)
-                    self.fields[fname].widget = BTSInputWidget(**widget_args)
+                    if is_password:
+                        self.fields[fname].widget = BTSPasswordWidget(**widget_args)
+                    else:
+                        self.fields[fname].widget = BTSInputWidget(**widget_args)
+            if False:  # debug
+                print("field %s: type %s, widget %s" %
+                      (fname, type(self.fields[fname]), type(self.fields[fname].widget)))
 
     def as_div(self):
         form_style = 'inline'

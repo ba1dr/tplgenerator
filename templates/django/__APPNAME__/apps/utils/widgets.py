@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.forms import CheckboxInput, TextInput
+from django.forms import CheckboxInput, TextInput, PasswordInput
 from django.forms.widgets import Widget, NumberInput
 from django.forms.fields import Field, CharField
 from django.forms.utils import flatatt
@@ -38,6 +38,9 @@ class BTSInputMixin(object):
         self.attrs['class'] = ' '.join(set(classes))
 
     def __init__(self, *args, **kwargs):
+        input_type = kwargs.pop('input_type', None)
+        if input_type:
+            self.input_type = input_type
         maxlength = kwargs.pop('max_length', None)
         placeholder = kwargs.pop('placeholder', None)
         css_class = kwargs.pop('css_class', '')
@@ -55,6 +58,10 @@ class BTSInputMixin(object):
 
 
 class BTSInputWidget(BTSInputMixin, TextInput):
+    pass
+
+
+class BTSPasswordWidget(BTSInputMixin, PasswordInput):
     pass
 
 

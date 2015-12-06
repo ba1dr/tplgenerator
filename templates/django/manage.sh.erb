@@ -23,6 +23,8 @@ case $cmd in
             echo "gunicorn seems to be already running"
             exit 133
         fi
+        sudo chown -R $USER: $WORK_DIR
+        sudo -u $USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py collectstatic --noinput"
         DAEMONFLAG="-D"
         STARTMSG="daemon"
         [ "$param1" = "--debug" ] && DAEMONFLAG="" && STARTMSG="interactive"
