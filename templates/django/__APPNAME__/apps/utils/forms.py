@@ -46,9 +46,15 @@ class ImprovedForm(object):
                     'placeholder': placeholder, 'css_class': css_class,
                     'error_messages': placeholder
                 })
-                if isinstance(self.fields[fname], forms.fields.IntegerField):
+                if isinstance(self.fields[fname], forms.fields.FloatField):
+                    # widget_args['attrs'].update({'type': 'number'})
+                    widget_args['attrs'].update({'class': self.add_class(fname, 'float-field')})
+                    widget_args.update({'numtype': 'float'})
+                    self.fields[fname].widget = BTSNumInputWidget(**widget_args)
+                elif isinstance(self.fields[fname], forms.fields.IntegerField):
                     # widget_args['attrs'].update({'type': 'number'})
                     widget_args['attrs'].update({'class': self.add_class(fname, 'number-field')})
+                    widget_args.update({'numtype': 'int'})
                     self.fields[fname].widget = BTSNumInputWidget(**widget_args)
                 elif isinstance(self.fields[fname], forms.fields.CharField):
                     widget_args['max_length'] = self.fields[fname].max_length

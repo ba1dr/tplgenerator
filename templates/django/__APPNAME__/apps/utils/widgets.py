@@ -45,6 +45,7 @@ class BTSInputMixin(object):
         placeholder = kwargs.pop('placeholder', None)
         css_class = kwargs.pop('css_class', '')
         error_messages = kwargs.pop('error_messages', '')
+        self.numtype = kwargs.pop('numtype', '')
         super().__init__(*args, **kwargs)
         self.set_class('form-control')
         if css_class:
@@ -77,6 +78,12 @@ class BTSNumInputWidget(BTSInputMixin, NumberInput):
         if retval and isinstance(retval, str):
             retval = retval.replace(',', '')  # we assume it was formatting addon
         return retval
+
+    def _format_value(self, value):
+        if self.numtype == 'float':
+            value = "%.2f" % value
+            return value
+        return super()._format_value(value)
 
 
 class PlainTextWidget(Widget):

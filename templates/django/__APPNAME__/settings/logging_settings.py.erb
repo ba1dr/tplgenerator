@@ -27,13 +27,18 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django': {
-            'handlers': ['file', 'console'],
-            'level': 'INFO',
+        # 'django': {
+        #     'handlers': ['file', ],
+        #     'level': 'INFO',
+        #     'propagate': True,
+        # },
+        'main': {
+            'handlers': ['file', ],
+            'level': 'DEBUG',
             'propagate': True,
         },
-        'main': {
-            'handlers': ['file', 'console'],
+        'utils': {
+            'handlers': ['file', ],
             'level': 'DEBUG',
             'propagate': True,
         },

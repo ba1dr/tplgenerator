@@ -22,3 +22,8 @@ with open(LOCAL_SETTINGS_FILE, 'r') as sf:
     ysettings = yaml.load(sf.read())
 
 from .logging_settings import LOGGING, LOG_FOLDER
+
+if DEBUG:
+    # make all loggers use the console.
+    for logger in LOGGING['loggers']:
+        LOGGING['loggers'][logger]['handlers'] = ['console']
