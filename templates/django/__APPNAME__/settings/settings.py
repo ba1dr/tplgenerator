@@ -12,14 +12,13 @@
 """
 
 import os
-import yaml
+from ..apps.utils.dynsettings import import_settings
 from .local import *
 
 if not os.path.exists(LOCAL_SETTINGS_FILE):
     raise Exception("Local setting sile %s not found!" % LOCAL_SETTINGS_FILE)
 
-with open(LOCAL_SETTINGS_FILE, 'r') as sf:
-    ysettings = yaml.load(sf.read())
+import_settings(LOCAL_SETTINGS_FILE)
 
 from .logging_settings import LOGGING, LOG_FOLDER
 
