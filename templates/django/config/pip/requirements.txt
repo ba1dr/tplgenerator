@@ -2,6 +2,7 @@ PyYAML
 gunicorn
 requests
 # redis
+psycopg2
 pillow
 uuid
 
@@ -9,7 +10,7 @@ django-appconf==1.0.1
 django-admin-tools
 django
 django-suit
-django-registration-redux==1.1
+django-registration-redux==1.2
 django-crispy-forms==1.5.2
 django-imagekit==3.2.6
 django_extensions

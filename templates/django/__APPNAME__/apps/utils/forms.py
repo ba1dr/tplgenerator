@@ -3,7 +3,8 @@ from django import forms
 from django.template.loader import render_to_string
 from django.forms.extras.widgets import SelectDateWidget
 
-from utils.widgets import CheckboxToggleWidget, BTSInputWidget, BTSNumInputWidget, BTSPasswordWidget
+from utils.widgets import (CheckboxToggleWidget, BTSInputWidget, BTSNumInputWidget, BTSPasswordWidget,
+                           BTSTextArea, BTSSelectWidget)
 
 
 class ImprovedForm(object):
@@ -28,6 +29,7 @@ class ImprovedForm(object):
                       (fname, type(self.fields[fname]), type(self.fields[fname].widget)))
             if isinstance(self.fields[fname].widget, forms.HiddenInput):
                 continue
+            is_textarea = isinstance(self.fields[fname].widget, forms.Textarea)
             prev_widget_args = self.fields[fname].widget.attrs
             widget_args = {'attrs': prev_widget_args}
             is_password = False
@@ -39,14 +41,18 @@ class ImprovedForm(object):
                 })
                 self.fields[fname].required = False  # to allow False values to be accepted
                 self.fields[fname].widget = CheckboxToggleWidget(**widget_args)
-            elif isinstance(self.fields[fname], (forms.fields.CharField, forms.fields.IntegerField, )):
+            elif isinstance(self.fields[fname], (forms.fields.CharField, forms.fields.IntegerField,
+                                                 forms.fields.ChoiceField,)):
                 placeholder = "This field is required" if self.fields[fname].required else self.fields[fname].help_text
                 css_class = ""
                 widget_args.update({
                     'placeholder': placeholder, 'css_class': css_class,
                     'error_messages': placeholder
                 })
-                if isinstance(self.fields[fname], forms.fields.FloatField):
+                if isinstance(self.fields[fname], forms.fields.ChoiceField):
+                    widget_args['choices'] = self.fields[fname].widget.choices
+                    self.fields[fname].widget = BTSSelectWidget(**widget_args)
+                elif isinstance(self.fields[fname], forms.fields.FloatField):
                     # widget_args['attrs'].update({'type': 'number'})
                     widget_args['attrs'].update({'class': self.add_class(fname, 'float-field')})
                     widget_args.update({'numtype': 'float'})
@@ -60,6 +66,8 @@ class ImprovedForm(object):
                     widget_args['max_length'] = self.fields[fname].max_length
                     if is_password:
                         self.fields[fname].widget = BTSPasswordWidget(**widget_args)
+                    elif is_textarea:
+                        self.fields[fname].widget = BTSTextArea(**widget_args)
                     else:
                         self.fields[fname].widget = BTSInputWidget(**widget_args)
             if False:  # debug

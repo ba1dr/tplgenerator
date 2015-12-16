@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.forms import CheckboxInput, TextInput, PasswordInput
-from django.forms.widgets import Widget, NumberInput
+from django.forms.widgets import Widget, NumberInput, Textarea, Select
 from django.forms.fields import Field, CharField
 from django.forms.utils import flatatt
 from django.utils.html import format_html
@@ -37,6 +37,9 @@ class BTSInputMixin(object):
             classes.remove(oldclass)
         self.attrs['class'] = ' '.join(set(classes))
 
+    def has_css_class(self, classname):
+        return classname in self.attrs.get('class', '').split(' ')
+
     def __init__(self, *args, **kwargs):
         input_type = kwargs.pop('input_type', None)
         if input_type:
@@ -56,6 +59,20 @@ class BTSInputMixin(object):
             self.attrs['placeholder'] = placeholder
         self.attrs['error_messages'] = error_messages
         self.attrs['data-content'] = error_messages
+
+    @property
+    def is_hidden(self):
+        if super().is_hidden:
+            return True
+        return self.has_css_class('hidden')
+
+
+class BTSSelectWidget(BTSInputMixin, Select):
+    pass
+
+
+class BTSTextArea(BTSInputMixin, Textarea):
+    pass
 
 
 class BTSInputWidget(BTSInputMixin, TextInput):

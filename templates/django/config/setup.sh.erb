@@ -35,24 +35,27 @@ sudo service apache2 stop
 sudo update-rc.d -f apache2 disable
 
 sudo apt-get update
-sudo apt-get install git nginx
-sudo apt-get install $PYTHON $PYTHON-dev $PYTHON-yaml
+sudo apt-get install -y git nginx mc htop
+sudo apt-get install -y $PYTHON $PYTHON-dev $PYTHON-yaml
 
 cd /tmp/
 wget https://bootstrap.pypa.io/get-pip.py
 sudo $PYTHON get-pip.py
 cd -
-
+    
 sudo $PIP install ipython
 
-sudo apt-get install libxml2-dev libxslt-dev libjpeg-dev libpng12-dev libfreetype6-dev zlibc zlib1g-dev
-
-# sass
-# coffee
-# npm install
+sudo apt-get install -y libxml2-dev libxslt-dev libjpeg-dev libpng12-dev libfreetype6-dev zlibc zlib1g-dev python3-lxml
+sudo apt-get install -y libpq-dev
 
 cd $BASE_DIR
 # git clone ! HERE get code
+# git clone git@bitbucket.org:PATHPATHPATHPATH ./
+
+# For development server install also:
+# sass
+# coffee
+# npm install
 
 # sudo $PIP install -r config/pip/requirements.txt
 
@@ -60,12 +63,21 @@ sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s $BASE_DIR/config/nginx/<%= @project_name %>.conf /etc/nginx/sites-available/
 sudo ln -s /etc/nginx/sites-available/<%= @project_name %>.conf /etc/nginx/sites-enabled/
 
-# -- HERE CREATE <%= @project_name %>/settings/local.py
-
 # fix permissions if were broken
 sudo chown -R $PROJ_USER: $BASE_DIR
 sudo chmod -R a+rwX $BASE_DIR
 sudo chmod -R -t $BASE_DIR
+
+# HERE we copy default config file to /usr/local/etc/ - EDIT IT and set correct local settings!
+sudo cp $BASE_DIR/config/$CFGFILE $CFGDIR
+sudo chown $PROJ_USER: $CFGDIR/$CFGFILE
+sudo chmod 660 $CFGDIR/$CFGFILE
+
+# The next line - only for development server (uncomment there):
+# gulp build
+
+# HERE do *MANUAL* setup your database - create schema, user, permissions
+# See ./postgres/db_setup.sh
 
 $PYTHON ./manage.py syncdb
 $PYTHON ./manage.py collectstatic --noinput

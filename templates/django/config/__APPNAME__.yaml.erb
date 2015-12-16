@@ -1,1 +1,16 @@
 # put this file into /usr/local/etc/
+
+SECRET_KEY: PutHereAnyRanD0mStRiNG123456789011223344556677889900
+
+DATABASES:
+    # development:
+    # default:
+    #     ENGINE: django.db.backends.sqlite3
+    #     NAME: db.sqlite3
+    # production:
+    default:
+        ENGINE: django.db.backends.postgresql_psycopg2
+        HOST: localhost
+        NAME: <%= @project_name %>
+        USER: <%= @project_name %>
+        PASS: <%= @project_name %>
