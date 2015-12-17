@@ -1,10 +1,9 @@
 
 from django import forms
 from django.template.loader import render_to_string
-from django.forms.extras.widgets import SelectDateWidget
 
 from utils.widgets import (CheckboxToggleWidget, BTSInputWidget, BTSNumInputWidget, BTSPasswordWidget,
-                           BTSTextArea, BTSSelectWidget)
+                           BTSTextArea, BTSSelectWidget, BTSSelectDateWidget)
 
 
 class ImprovedForm(object):
@@ -70,6 +69,10 @@ class ImprovedForm(object):
                         self.fields[fname].widget = BTSTextArea(**widget_args)
                     else:
                         self.fields[fname].widget = BTSInputWidget(**widget_args)
+            elif isinstance(self.fields[fname], forms.fields.DateField):
+                allyears = range(2060, 1900, -1)
+                widget_args['attrs'].update({'class': self.add_class(fname, 'date-field')})
+                self.fields[fname].widget = BTSSelectDateWidget(years=allyears, **widget_args)
             if False:  # debug
                 print("field %s: type %s, widget %s" %
                       (fname, type(self.fields[fname]), type(self.fields[fname].widget)))

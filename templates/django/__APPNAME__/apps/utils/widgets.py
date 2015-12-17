@@ -2,6 +2,7 @@
 
 from django.forms import CheckboxInput, TextInput, PasswordInput
 from django.forms.widgets import Widget, NumberInput, Textarea, Select
+from django.forms.extras.widgets import SelectDateWidget
 from django.forms.fields import Field, CharField
 from django.forms.utils import flatatt
 from django.utils.html import format_html
@@ -65,6 +66,10 @@ class BTSInputMixin(object):
         if super().is_hidden:
             return True
         return self.has_css_class('hidden')
+
+
+class BTSSelectDateWidget(BTSInputMixin, SelectDateWidget):
+    pass
 
 
 class BTSSelectWidget(BTSInputMixin, Select):
