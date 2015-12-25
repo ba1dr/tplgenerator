@@ -1,0 +1,8 @@
+graft config
+graft docs
+graft <%= @project_name %>
+prune <%= @project_name %>/media
+include manage.py manage.sh
+
+global-exclude __pycache__
+global-exclude *.py[co]
