@@ -1,0 +1,20 @@
+#!/bin/bash
+#chkconfig: 345 95 50
+#description: Starts <%= @project_name %>
+if [ -z "$1" ]; then
+echo "`basename $0` {start|stop|restart}"
+   exit
+fi
+
+case "$1" in
+start)
+   sh /opt/<%= @project_name %>/manage.sh start &
+;;
+stop)
+   sh /opt/<%= @project_name %>/manage.sh stop
+;;
+restart)
+   sh /opt/<%= @project_name %>/manage.sh stop
+   sh /opt/<%= @project_name %>/manage.sh start
+;;
+esac

@@ -1,0 +1,7 @@
+
+init.d script - call a command:
+
+    sudo ln -s /opt/<%= @project_name %>/config/init.d/<%= @project_name %>.conf /etc/init.d/<%= @project_name %>
+    sudo chmod a+x /etc/init.d/<%= @project_name %>
+    sudo chown root: /etc/init.d/<%= @project_name %>
+

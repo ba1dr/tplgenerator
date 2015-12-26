@@ -73,6 +73,11 @@ sudo cp $BASE_DIR/config/$CFGFILE $CFGDIR
 sudo chown $PROJ_USER: $CFGDIR/$CFGFILE
 sudo chmod 660 $CFGDIR/$CFGFILE
 
+# create startup script
+sudo ln -s $BASE_DIR/config/init.d/<%= @project_name %>.conf /etc/init.d/<%= @project_name %>
+sudo chmod a+x /etc/init.d/<%= @project_name %>
+sudo chown root: /etc/init.d/<%= @project_name %>
+
 # The next line - only for development server (uncomment there):
 # gulp build
 
