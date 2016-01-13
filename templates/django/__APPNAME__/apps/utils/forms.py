@@ -21,6 +21,9 @@ class ImprovedForm(object):
         # adds CSS class for the field's widget
         self.fields[field_name].widget.attrs['class'] = self.add_class(field_name, newclass)
 
+    def unset_widget_class(self, field_name, classname):
+        self.fields[field_name].widget.unset_class(classname)
+
     def reinit_widgets(self):
         for fname in self.fields:
             if False:  # debug
@@ -53,12 +56,22 @@ class ImprovedForm(object):
                     self.fields[fname].widget = BTSSelectWidget(**widget_args)
                 elif isinstance(self.fields[fname], forms.fields.FloatField):
                     # widget_args['attrs'].update({'type': 'number'})
-                    widget_args['attrs'].update({'class': self.add_class(fname, 'float-field')})
+                    widget_class = "float-field"
+                    if self.fields[fname].min_value and self.fields[fname].min_value >= 0:
+                        widget_class += ' positive-number'
+                    else:
+                        widget_class += ' allow-negative'
+                    widget_args['attrs'].update({'class': self.add_class(fname, widget_class)})
                     widget_args.update({'numtype': 'float'})
                     self.fields[fname].widget = BTSNumInputWidget(**widget_args)
                 elif isinstance(self.fields[fname], forms.fields.IntegerField):
                     # widget_args['attrs'].update({'type': 'number'})
-                    widget_args['attrs'].update({'class': self.add_class(fname, 'number-field')})
+                    widget_class = "number-field"
+                    if self.fields[fname].min_value and self.fields[fname].min_value >= 0:
+                        widget_class += ' positive-number'
+                    else:
+                        widget_class += ' allow-negative'
+                    widget_args['attrs'].update({'class': self.add_class(fname, widget_class)})
                     widget_args.update({'numtype': 'int'})
                     self.fields[fname].widget = BTSNumInputWidget(**widget_args)
                 elif isinstance(self.fields[fname], forms.fields.CharField):

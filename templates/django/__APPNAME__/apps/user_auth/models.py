@@ -40,7 +40,7 @@ class Account(AbstractBaseUser):
     username = models.CharField(max_length=40, unique=True)
     first_name = models.CharField(max_length=40, blank=True)
     last_name = models.CharField(max_length=40, blank=True)
-    avatar = ProcessedImageField(upload_to='avatars', format='JPEG', options={'quality': 80})
+    avatar = ProcessedImageField(upload_to='avatars', format='JPEG', options={'quality': 80}, null=True, blank=True)
 
     is_admin = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -31,6 +31,7 @@ DJANGO_APPS = (
     # 'admin_tools.menu',
     # 'admin_tools.dashboard',
     'suit',
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -105,6 +106,8 @@ TEMPLATES = [
         },
     },
 ]
+
+CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
 
 from .logging_settings import LOGGING
 
