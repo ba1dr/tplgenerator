@@ -1,6 +1,7 @@
 
 from django import forms
 from django.template.loader import render_to_string
+from django.utils.translation import ugettext_lazy as _
 
 from utils.widgets import (CheckboxToggleWidget, BTSInputWidget, BTSNumInputWidget, BTSPasswordWidget,
                            BTSTextArea, BTSSelectWidget, BTSSelectDateWidget)
@@ -24,6 +25,17 @@ class ImprovedForm(object):
     def unset_widget_class(self, field_name, classname):
         self.fields[field_name].widget.unset_class(classname)
 
+    def translate_field(self, fname):
+        # pretty slow function - maybe remove?
+        # return  # comment out if works slow
+        orig = self.fields[fname].label
+        trval = _(orig)
+        if trval == orig:
+            trval = _(fname)
+            if trval == fname:
+                trval = orig
+        self.fields[fname].label = trval
+
     def reinit_widgets(self):
         for fname in self.fields:
             if False:  # debug
@@ -31,6 +43,7 @@ class ImprovedForm(object):
                       (fname, type(self.fields[fname]), type(self.fields[fname].widget)))
             if isinstance(self.fields[fname].widget, forms.HiddenInput):
                 continue
+            self.translate_field(fname)
             is_textarea = isinstance(self.fields[fname].widget, forms.Textarea)
             prev_widget_args = self.fields[fname].widget.attrs
             widget_args = {'attrs': prev_widget_args}

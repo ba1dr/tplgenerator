@@ -14,8 +14,8 @@ workers = multiprocessing.cpu_count() * 2 + 1
 # workers = 4
 keepalive = 5
 
-user = "gunicorn"
-group = "gunicorn"
+# user = "<%= @project_name %>"
+# group = "<%= @project_name %>"
 
 # accesslog = logdir + "/gunicorn-access.log"
 accesslog = None  # see nginx's accesslog if needed

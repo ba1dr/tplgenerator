@@ -14,7 +14,7 @@ PIP=pip3
 
 # ---
 
-[ "$PYTHON" -eq "python3" ] && PIP=pip3
+[ "$PYTHON" == "python3" ] && PIP=pip3
 
 sudo adduser $PROJ_USER
 sudo adduser $PROJ_USER sudo
@@ -37,7 +37,7 @@ sudo service apache2 stop
 sudo update-rc.d -f apache2 disable
 
 sudo apt-get update
-sudo apt-get install -y git nginx mc htop
+sudo apt-get install -y git nginx mc htop screen
 sudo apt-get install -y $PYTHON $PYTHON-dev $PYTHON-yaml
 
 cd /tmp/

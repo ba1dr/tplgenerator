@@ -47,3 +47,8 @@ def saferesp(func):
 @saferesp
 def index():
     return indexpage.get(request)
+
+
+if __name__ == '__main__':
+    # debug mode
+    buildapp()

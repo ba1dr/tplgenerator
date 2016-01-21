@@ -1,8 +1,14 @@
 #!/bin/bash
+# This script is intended to run the web service as a linux daemon
+# it starts Gunicorn daemon behind of Nginx service
+# It expects that the environment is prepared and there is a system user exists (see $USER variable below)
+# to run or stop:
+# $ sh manage.sh start
+# $ sh manage.sh stop
 
 CUR_DIR=$(dirname $(readlink -f $0))
 WORK_DIR=$CUR_DIR/web
-USER=gunicorn
+USER=<%= @project_name %>
 LOGDIR=/var/log/<%= @project_name %>
 PYTHON=/usr/bin/python
 GUNICORN=/usr/local/bin/gunicorn
@@ -20,14 +26,15 @@ checkps=`ps ax | grep gunicorn | grep -v grep | grep -v sudo`
 setup() {
     initsudoecho
     # create the user if not exists
-    [ `id -u $USER 2>/dev/null` ] || echo "$USER:xxabc410djq$USER:::::/usr/sbin/nologin" | sudo newusers
+    # [ `id -u $USER 2>/dev/null` ] || echo "$USER:xxabc410djq$USER:::::/usr/sbin/nologin" | sudo newusers
 
     # creating log dir and force set permissions
     ! [ -d "$LOGDIR" ] && sudo mkdir -p $LOGDIR
     sudo chown -R $USER: $LOGDIR
     sudo chmod -R a+rwX $LOGDIR
 
-    coffee --compile $WORK_DIR/
+    # compile the CoffeeScript files to JavaScript (if possible)
+    which coffee && coffee --compile $WORK_DIR/
 }
 
 case $cmd in

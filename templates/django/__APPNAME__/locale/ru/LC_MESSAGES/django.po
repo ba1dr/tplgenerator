@@ -1,0 +1,10 @@
+
+msgid "first_name"
+msgstr "Имя"
+
+msgid "last_name"
+msgstr "Фамилия"
+
+msgid "Register"
+msgstr "Зарегистрировать"
+
