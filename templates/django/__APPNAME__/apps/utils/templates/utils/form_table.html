@@ -3,9 +3,13 @@
     {{ form.non_field_errors }}
     <table class="table">
     {% for f in form %}
-    <tr><td class="leftcol">
-        {{ f.errors }} {{ f.label_tag}}</td>
-        <td class="rightcol">{{ f }}</td>
+    <tr class="{% if f.is_hidden %}hidden{% endif %} fieldrow"><td class="leftcol col-md-4">
+        {% if f.field.required %}<span class="field-required">*</span>&nbsp;{% endif %}{{ f.label_tag }}
+        {{ f.errors }}</td>
+        <td class="rightcol col-md-8 formelement-{{ f.name }}">
+        {{ f }}
+        {% if f.help_text %}<p><small>{{ f.help_text }}</small></p>{% endif %}
+        </td>
     </tr>
     {% endfor %}
     </table>

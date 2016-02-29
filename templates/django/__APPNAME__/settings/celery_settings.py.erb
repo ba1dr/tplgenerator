@@ -11,7 +11,7 @@ from celery.signals import task_postrun
 
 from django.conf import settings
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', '<%= @project_name %>.local')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', '<%= @project_name %>.settings.settings')
 
 app = Celery('<%= @project_name %>')
 

@@ -14,7 +14,7 @@ django_build() {
     $PYTHON $CUR_DIR/manage.py compilemessages
 
     # collect static files
-    $PYTHON $CUR_DIR/manage.py collectstatic
+    $PYTHON $CUR_DIR/manage.py collectstatic --noinput
 }
 
 case $cmd in
@@ -28,7 +28,7 @@ prod)
     django_build
 
     # build for production: minimize resource files
-    # gulp build --production
+    gulp build --production
 ;;
 esac
 

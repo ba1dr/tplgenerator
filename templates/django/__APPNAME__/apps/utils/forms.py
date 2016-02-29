@@ -28,7 +28,7 @@ class ImprovedForm(object):
     def translate_field(self, fname):
         # pretty slow function - maybe remove?
         # return  # comment out if works slow
-        orig = self.fields[fname].label
+        orig = self.fields[fname].label or ''
         trval = _(orig)
         if trval == orig:
             trval = _(fname)

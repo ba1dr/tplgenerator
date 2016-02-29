@@ -38,7 +38,7 @@ case $cmd in
         else
             echo "Started $STARTMSG"
         fi
-        # sudo -u $USER sh -c "cd $WORK_DIR; $CELERY worker -A $PROJ_NAME.settings -D --concurrency=3 --logfile=/var/log/$PROJ_NAME/celery.log --pidfile=/tmp/celery.pid"
+        # sudo -u $USER sh -c "cd $WORK_DIR; $CELERY worker -A $PROJ_NAME.settings.celery_settings -D --concurrency=3 --logfile=/var/log/$PROJ_NAME/celery.log --pidfile=/tmp/celery.pid"
         sudo service nginx restart
         ;;
     stop)

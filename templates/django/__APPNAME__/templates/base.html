@@ -6,6 +6,7 @@
         <title>{% block title %}Hello, world!{% endblock %}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Alexey Kolyanov"/>
 
         {% load staticfiles %}
 
@@ -19,11 +20,22 @@
         <link rel="stylesheet" href="{% static 'css/screen.css' %}">
     </head>
     <body>
+        {% block maincontainer %}
         {% include 'partials/nav.html' %}
-
-        <div class="container">
+        <div class="container-fullwidth">
             {% block content %}{% endblock %}
         </div>
+        <div class="modal-element">
+        </div>
+        {% endblock %}
+
+        {% block footer %}
+        <footer>
+            <div>
+                &nbsp;
+            </div>
+        </footer>
+        {% endblock %}
 
         <script src="{% static 'js/dependencies.js' %}"></script>
         <script src="{% static 'js/app.js' %}"></script>

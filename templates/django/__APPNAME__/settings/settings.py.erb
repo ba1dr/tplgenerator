@@ -22,7 +22,13 @@ import_settings(LOCAL_SETTINGS_FILE)
 
 from .logging_settings import LOGGING, LOG_FOLDER
 
+# define loggers for every app
+for app in LOCAL_APPS:
+    if app not in LOGGING['loggers']:
+        LOGGING['loggers'][app] = LOGGING['loggers']['main']
+
 if DEBUG:
     # make all loggers use the console.
     for logger in LOGGING['loggers']:
-        LOGGING['loggers'][logger]['handlers'] = ['console']
+        if 'console' not in LOGGING['loggers'][logger]['handlers']:
+            LOGGING['loggers'][logger]['handlers'] += ['console']

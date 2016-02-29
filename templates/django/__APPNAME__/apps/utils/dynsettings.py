@@ -2,6 +2,7 @@
 
 """
     Function import_settings() will load config file in yaml/json format into the caller's local namespace
+    See https://github.com/ba1dr/dynsettings
 """
 
 import os
