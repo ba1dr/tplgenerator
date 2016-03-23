@@ -5,6 +5,7 @@ import os
 import sys
 
 # DEFINE PATHS
+APP_NAME = '<%= @project_name %>'
 PROJECT_DIR = os.path.dirname(__file__)
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 REPO_DIR = os.path.dirname(BASE_DIR)
@@ -119,9 +120,8 @@ TEMPLATES = [
 
 CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
 
-from .logging_settings import LOGGING
-
 # APP SPECFIC SETTINGS
+LOG_FOLDER = '/var/log/<%= @project_name %>'
 LOCAL_SETTINGS_FILE = '/usr/local/etc/<%= @project_name %>.yaml'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 ACCOUNT_ACTIVATION_DAYS = 7

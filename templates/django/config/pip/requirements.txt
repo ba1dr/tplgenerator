@@ -4,11 +4,11 @@ requests
 # redis
 psycopg2
 pillow
-uuid
+# uuid
 
 django-appconf==1.0.1
 django-admin-tools
-django
+django==1.8.11
 django-suit
 django-registration-redux==1.2
 django-crispy-forms==1.5.2
@@ -18,7 +18,7 @@ django_extensions
 django-debug-toolbar
 # git+https://github.com/djsutho/django-debug-toolbar-request-history
 # django-storages==1.1.8
-django-decorator-include
 Werkzeug
+ipython
 
 # celery

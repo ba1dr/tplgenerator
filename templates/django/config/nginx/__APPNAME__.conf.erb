@@ -48,9 +48,9 @@ server {
     location /50x.html { root   /opt/<%= @project_name %>/<%= @project_name %>/static/errors; }
     location /404.html { root   /opt/<%= @project_name %>/<%= @project_name %>/static/errors; }
 
-    location = /robots.txt { alias /opt/<%= @project_name %>/<%= @project_name %>/static/robots.txt }
-    location = /favicon.ico { alias /opt/<%= @project_name %>/<%= @project_name %>/static/img/favicon.ico }
-    location = /favicon.png { alias /opt/<%= @project_name %>/<%= @project_name %>/static/img/favicon.png }
+    location = /robots.txt { alias /opt/<%= @project_name %>/<%= @project_name %>/static/robots.txt; }
+    location = /favicon.ico { alias /opt/<%= @project_name %>/<%= @project_name %>/static/img/favicon.ico; }
+    location = /favicon.png { alias /opt/<%= @project_name %>/<%= @project_name %>/static/img/favicon.png; }
 
     location / {
         # auth_basic "<%= @project_name %>";

@@ -20,15 +20,6 @@ if not os.path.exists(LOCAL_SETTINGS_FILE):
 
 import_settings(LOCAL_SETTINGS_FILE)
 
-from .logging_settings import LOGGING, LOG_FOLDER
+from .logging_settings import get_logging_config
 
-# define loggers for every app
-for app in LOCAL_APPS:
-    if app not in LOGGING['loggers']:
-        LOGGING['loggers'][app] = LOGGING['loggers']['main']
-
-if DEBUG:
-    # make all loggers use the console.
-    for logger in LOGGING['loggers']:
-        if 'console' not in LOGGING['loggers'][logger]['handlers']:
-            LOGGING['loggers'][logger]['handlers'] += ['console']
+LOGGING = get_logging_config(APP_NAME, LOG_FOLDER, apps=LOCAL_APPS, debug=DEBUG)

@@ -19,16 +19,16 @@ django_build() {
 
 case $cmd in
 dev)
-    django_build
-
     # build with gulp
     gulp build
+ 
+    django_build
 ;;
 prod)
-    django_build
-
     # build for production: minimize resource files
     gulp build --production
+
+    django_build
 ;;
 esac
 
