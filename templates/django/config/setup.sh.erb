@@ -44,7 +44,9 @@ cd /tmp/
 wget https://bootstrap.pypa.io/get-pip.py
 sudo $PYTHON get-pip.py
 cd -
-    
+
+sudo $PIP install virtualenv
+
 sudo $PIP install ipython
 
 sudo apt-get install -y libxml2-dev libxslt-dev libjpeg-dev libpng12-dev libfreetype6-dev zlibc zlib1g-dev python3-lxml
@@ -59,7 +61,10 @@ cd $BASE_DIR
 # coffee
 # npm install
 
-# sudo $PIP install -r config/pip/requirements.txt
+virtualenv venv
+. ./venv/bin/activate
+
+# $PIP install -r config/pip/requirements.txt
 
 sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s $BASE_DIR/config/nginx/<%= @project_name %>.conf /etc/nginx/sites-available/

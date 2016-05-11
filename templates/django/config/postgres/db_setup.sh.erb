@@ -7,7 +7,7 @@ DBPASS=<%= @project_name %>pass
 DBNAME=<%= @project_name %>
 
 # CAUTION: THIS FILE IS INTENDED TO BE RUN ON UBUNTU!
-PGPKGLIST=`apt-cache search postgres-$PG_VERSION`
+PGPKGLIST=`apt-cache search postgresql-$PG_VERSION`
 if [ -z "$PGPKGLIST" ]; then
     echo "Package postgres-$PG_VERSION not found, trying to add repo"
     UBUNTU_CODENAME=`lsb_release -c -s`

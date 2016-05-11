@@ -14,7 +14,6 @@
         <!-- <link type="text/plain" rel="author" href="/static/humans.txt" /> -->
 
         {% block add_css %}{% endblock %}
-        {% block add_js %}{% endblock %}
 
         <link rel="stylesheet" href="{% static 'css/dependencies.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/screen.css' %}">
@@ -39,6 +38,7 @@
 
         <script src="{% static 'js/dependencies.js' %}"></script>
         <script src="{% static 'js/app.js' %}"></script>
+        {% block add_js %}{% endblock %}
 
         {% if debug %}
             <script type='text/javascript' id="__bs_script__">
