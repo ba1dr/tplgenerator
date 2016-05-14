@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="pgmain" data-pgclass="pgmain">
+
+<h1>{% block list_title %}List of Objects{% endblock %}</h1>
+
+<div class="row">
+    <div class="col-md-12 pgmain paginated_content pagination-sortfield"
+        data-pgclass="pgmain"
+        data-sortfield="{% block sortfield %}{{ sortfield }}{% endblock %}"
+        data-asc="1">
+        {% block list_body_initial %}
+        <img src="{% static 'img/progress_large.gif' %}">
+        {% endblock %}        
+    </div>
+</div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'partials/list.html' %}
+{% load booltags %}
+
+{% block listcontent %}
+
+<table class="table table-condensed table-hover text-center vis-editable table-header-rotated" data-editform="{{ editurl }}">
+<tr>
+    {% block table_headers %}
+    <th data-sort='name' class="sortable"><div><span>Name</span></div></th>
+    {% endblock %}
+</tr>
+{% for i in items %}
+<tr data-id="{{ i.id }}">
+    {% block table_items %}
+    <td class="text-left">{{ i.id }}</td>
+    {% endblock %}
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

@@ -2,45 +2,52 @@
 $ ->
     # navigation
     curpage = 1
-    source_url = $('.pagination-sortfield').data('source-url')
-    if not source_url
-        source_url = window.location.pathname
-    sortfield = $('.pagination-sortfield').data('field')
-    ascsort = $('.pagination-sortfield').data('asc')
-    if "#{ascsort}" not in ['0', '1']
-        ascsort = "1"
     disableEvents = false
 
-    navigate = (page=null) ->
-        page = page or curpage
+    navigate = (element, page, sort_data) ->
+        pgclass = $(element).data('pgclass')
+        if not pgclass
+            pgclass = $(element).closest('[data-pgclass]').data('pgclass')
+        if pgclass
+            pgclass = ".#{pgclass} "
+        page = page or 1
         lfilters = ""
-        for lfo in $('.list-filter')
+        for lfo in $(pgclass + '.list-filter')
             fname = $(lfo).attr('name')
             fvalue = $(lfo).val()
             if fvalue && fvalue != '-'
                 lfilters += "&filters[]=#{fname}*#{fvalue}"
         extravars = ""
-        for lfo in $('.pagination-parameter')
+        for lfo in $(pgclass + '.pagination-parameter')
             fname = $(lfo).data('name')
             fvalue = $(lfo).data('value')
             if fvalue != '-'
                 extravars += "&#{fname}=#{fvalue}"
             # console.log(fname, fvalue)
+        sortfield = if sort_data then sort_data[0] else $(pgclass + '.pagination-sortfield').data('sortfield') or ''
+        ascsort = if sort_data then sort_data[1] else $(pgclass + '.pagination-sortfield').data('asc')
+        if "#{ascsort}" not in ['0', '1']
+            ascsort = "1"
+        $(pgclass + '.pagination-sortfield').data('asc', ascsort)
+        source_url = $(pgclass + '.paginated_content').data('source-url')
+        if not source_url
+            source_url = window.location.pathname
         $.ajax source_url + "?&page="+page+lfilters+"&sort=#{sortfield}&asc=#{ascsort}"+extravars,
             type: 'GET'
             dataType: 'html'
             success: (data, textStatus, jqXHR) ->
                 curpage = page
-                $('.paginated_content').html(data)
+                $(pgclass + '.paginated_content').html(data)
                 reinitWidgets()
                 # sorting styling
-                hhh = $("[data-sort='#{sortfield}']").addClass('sortfield').html()
-                if "#{ascsort}" == '1'
-                    hhh = hhh.replace('</span></div>', ' <i class=" fa fa-sort-alpha-asc"></i></span></div>')
-                    $("[data-sort='#{sortfield}']").addClass('sortasc').html(hhh)
-                else
-                    hhh = hhh.replace('</span></div>', ' <i class=" fa fa-sort-alpha-desc"></i></span></div>')
-                    $("[data-sort='#{sortfield}']").addClass('sortdesc').html(hhh)
+                hhh = $(pgclass + "[data-sort=\"#{sortfield}\"]").addClass('sortfield').html()
+                if hhh
+                    if "#{ascsort}" == '1'
+                        hhh = hhh.replace('</span></div>', ' <i class=" fa fa-sort-alpha-asc"></i></span></div>')
+                        $(pgclass + "[data-sort='#{sortfield}']").addClass('sortasc').html(hhh)
+                    else
+                        hhh = hhh.replace('</span></div>', ' <i class=" fa fa-sort-alpha-desc"></i></span></div>')
+                        $(pgclass + "[data-sort='#{sortfield}']").addClass('sortdesc').html(hhh)
             error: (jqXHR, textStatus, error) ->
                 console.log(jqXHR)
                 console.log(textStatus)
@@ -53,28 +60,32 @@ $ ->
         nextpage = $(this).data('page')
         if !nextpage
             return false
-        navigate(nextpage)
+        navigate(this, nextpage)
 
     $(document).on 'change', '.list-filter', () ->
         if not disableEvents
-            navigate(1)
+            navigate(this, 1)
 
     $(document).on 'click', '.filter-reset', () ->
         disableEvents = true
         # $(".list-filter").select2('val', '-')
-        for selobj in $(".list-filter")
+        pgclass = $(element).closest('[data-pgclass]').data('pgclass')
+        for selobj in $(pgclass + " .list-filter")
             $(selobj).select2('val', '-')
         disableEvents = false
-        navigate(1)
+        navigate(this, 1)
 
     $(document).on 'click', '[data-sort]', () ->
+        pgclass = $(this).closest('[data-pgclass]').data('pgclass')
+        sortfield = $(".#{pgclass} .pagination-sortfield").data('sortfield') or ''
         mysortfield = $(this).data('sort')
+        ascsort = $(".#{pgclass} .pagination-sortfield").data('asc')
         if sortfield == mysortfield
             ascsort = ascsort ^ 1
         else
             ascsort = 1
             sortfield = mysortfield
-        navigate()
+        navigate(this, null, [sortfield, ascsort])
         
-    if $('.paginated_content').length > 0
-        navigate(1)
+    $('.paginated_content').each ->
+        navigate(this, 1)
