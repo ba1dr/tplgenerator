@@ -29,10 +29,11 @@ $ ->
         if "#{ascsort}" not in ['0', '1']
             ascsort = "1"
         $(pgclass + '.pagination-sortfield').data('asc', ascsort)
+        $(pgclass + '.pagination-sortfield').data('sortfield', sortfield)
         source_url = $(pgclass + '.paginated_content').data('source-url')
         if not source_url
             source_url = window.location.pathname
-        $.ajax source_url + "?&page="+page+lfilters+"&sort=#{sortfield}&asc=#{ascsort}"+extravars,
+        $.ajax source_url + "?&page="+page+lfilters+"&sort=#{sortfield}&sortasc=#{ascsort}"+extravars,
             type: 'GET'
             dataType: 'html'
             success: (data, textStatus, jqXHR) ->
@@ -84,8 +85,7 @@ $ ->
             ascsort = ascsort ^ 1
         else
             ascsort = 1
-            sortfield = mysortfield
-        navigate(this, null, [sortfield, ascsort])
+        navigate(this, null, [mysortfield, ascsort])
         
     $('.paginated_content').each ->
         navigate(this, 1)

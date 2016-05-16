@@ -2,10 +2,11 @@
 
 import os
 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, DetailView, FormView
 from django.views.decorators.csrf import csrf_exempt
 
@@ -91,12 +92,16 @@ def auth_login(request):
 
         if user and user.is_active:
             login(request, user)
-            return redirect('dashboard')
+            redirect_to = request.POST.get(REDIRECT_FIELD_NAME,
+                                           request.GET.get(REDIRECT_FIELD_NAME, '/'))
+            return HttpResponseRedirect(redirect_to)
 
         error = 'Could not authenticate user'
 
     context = {
-        'error': error
+        'error': error,
+        REDIRECT_FIELD_NAME: request.GET.get(REDIRECT_FIELD_NAME,
+                                             request.POST.get(REDIRECT_FIELD_NAME, '/'))
     }
 
     return render(request, 'user_auth/login.html', context)

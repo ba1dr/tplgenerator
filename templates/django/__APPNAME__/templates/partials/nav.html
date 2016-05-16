@@ -11,21 +11,23 @@
             </div>
 
             <div class="collapse navbar-collapse" id="nav-collapse">
+                <ul class="nav navbar-nav navbar-left">
                 {% if user.is_authenticated %}
-                    <a href="/" class="btn btn-primary navbar-btn" role="button"><span class="fa fa-folder-open"></span> Home</a>
+                    <li><a href="/" class=""><span class="fa fa-home"></span> Home</a></li>
                 {% endif %}
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                         <li><p class="navbar-text">{% if user.avatar %}<img src="{{ user.avatar.url }}" class="img img-rounded" height="28" width="28" alt="Profile Picture" />{% endif %} Logged in as <strong><a href="{% url 'view-profile' user.username %}">{{ user.get_identification }}</a></strong></p></li>
                     <li><form class="navbar-form navbar-right" role="form" method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-primary"><span class="fa fa-sign-out"></span> Logout</button>
+                        <button type="submit" class=""><span class="fa fa-sign-out"></span> Logout</button>
                     </form></li>
                     {% endif %}
                     {% if not user.is_authenticated %}
-                        <li><a href="{% url 'login' %}" class="btn btn-link">Login</a></li>
-                        <li><a href="{% url 'register' %}" class="btn btn-link">Register</a></li>
-                        <li><a href="{% url 'password_reset' %}" class="btn btn-link">Password Reset</a></li>
+                        <li><a href="{% url 'login' %}" class="">Login</a></li>
+                        <li><a href="{% url 'register' %}" class="">Register</a></li>
+                        <li><a href="{% url 'password_reset' %}" class="">Password Reset</a></li>
                     {% endif %}
                 </ul>
             </div>
