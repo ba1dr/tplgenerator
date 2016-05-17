@@ -45,12 +45,12 @@ server {
     error_page 404 /404.html;
     error_log  /var/log/<%= @project_name %>/nginx-error.log;
   
-    location /50x.html { root   /opt/<%= @project_name %>/<%= @project_name %>/static/errors; }
-    location /404.html { root   /opt/<%= @project_name %>/<%= @project_name %>/static/errors; }
+    location /50x.html { root   /opt/<%= @project_name %>/static/errors; }
+    location /404.html { root   /opt/<%= @project_name %>/static/errors; }
 
-    location = /robots.txt { alias /opt/<%= @project_name %>/<%= @project_name %>/static/robots.txt; }
-    location = /favicon.ico { alias /opt/<%= @project_name %>/<%= @project_name %>/static/img/favicon.ico; }
-    location = /favicon.png { alias /opt/<%= @project_name %>/<%= @project_name %>/static/img/favicon.png; }
+    location = /robots.txt { alias /opt/<%= @project_name %>/static/robots.txt; }
+    location = /favicon.ico { alias /opt/<%= @project_name %>/static/img/favicon.ico; }
+    location = /favicon.png { alias /opt/<%= @project_name %>/static/img/favicon.png; }
 
     location / {
         # auth_basic "<%= @project_name %>";
@@ -59,12 +59,12 @@ server {
     }
 
     location /static/ {
-        alias /opt/<%= @project_name %>/<%= @project_name %>/static/;
+        alias /opt/<%= @project_name %>/static/;
         access_log  off;
     }
 
     location /media/ {
-        alias /opt/<%= @project_name %>/<%= @project_name %>/media/;
+        alias /opt/<%= @project_name %>/media/;
     }
 
     location @gunicorn {

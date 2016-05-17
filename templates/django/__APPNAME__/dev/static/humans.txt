@@ -1,0 +1,3 @@
+/* TEAM */
+developer: Alexey Kolyanov
+Site: http://alexeykolyanov.webtm.ru/

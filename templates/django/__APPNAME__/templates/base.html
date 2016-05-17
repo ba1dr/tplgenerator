@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!doctype html>
 <html lang="en">
     <head>
@@ -8,10 +9,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Alexey Kolyanov"/>
 
-        {% load staticfiles %}
-
         <!-- <link rel="shortcut icon" href="/static/favicon.ico"> -->
-        <!-- <link type="text/plain" rel="author" href="/static/humans.txt" /> -->
+        <link type="text/plain" rel="author" href="{% static 'humans.txt' %}" />
+        <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
 
         {% block add_css %}{% endblock %}
 

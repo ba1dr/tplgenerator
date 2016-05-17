@@ -4,16 +4,16 @@ CUR_DIR=$(dirname $(readlink -f $0))
 WORK_DIR=$CUR_DIR
 PROJ_NAME=<%= @project_name %>
 # USER=gunicorn
-USER=<%= @project_name %>
-PYTHON=/usr/bin/python3
-CELERY=/usr/local/bin/celery
-GUNICORN=/usr/local/bin/gunicorn
+PROJ_USER=<%= @project_name %>
+PYTHON=$WORK_DIR/venv/bin/python
+CELERY=$WORK_DIR/venv/bin/celery
+GUNICORN=$WORK_DIR/venv/bin/gunicorn
 
 # init sudo
 sudo echo "" > /dev/null
 
 # create the user if not exists
-# [ `id -u $USER 2>/dev/null` ] || echo "$USER:pass123$USER:::::/usr/sbin/nologin" | sudo newusers
+# [ `id -u $PROJ_USER 2>/dev/null` ] || echo "$PROJ_USER:$pass123PROJ_USER:::::/usr/sbin/nologin" | sudo newusers
 
 cmd=$1; ! [ -z "$cmd" ] && shift
 param1=$1; ! [ -z "$param1" ] && shift
@@ -26,19 +26,19 @@ case $cmd in
             echo "gunicorn seems to be already running"
             exit 133
         fi
-        sudo chown -R $USER: $WORK_DIR
-        sudo -u $USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py collectstatic --noinput"
+        sudo chown -R $PROJ_USER: $WORK_DIR
+        sudo -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py collectstatic --noinput"
         DAEMONFLAG="-D"
         STARTMSG="daemon"
         [ "$param1" = "--debug" ] && DAEMONFLAG="" && STARTMSG="interactive"
-        sudo -u $USER sh -c "cd $WORK_DIR; $PYTHON -W ignore $GUNICORN -c $CUR_DIR/config/gunicorn/gunicorn.conf.py --chdir $WORK_DIR $PROJ_NAME.wsgi:application $DAEMONFLAG"
+        sudo -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON -W ignore $GUNICORN -c $CUR_DIR/config/gunicorn/gunicorn.conf.py --chdir $WORK_DIR $PROJ_NAME.wsgi:application $DAEMONFLAG"
         if [ $? -ne 0 ]; then
             echo "ERROR starting gunicorn"
             exit 127
         else
             echo "Started $STARTMSG"
         fi
-        # sudo -u $USER sh -c "cd $WORK_DIR; $CELERY worker -A $PROJ_NAME.settings.celery_settings -D --concurrency=3 --logfile=/var/log/$PROJ_NAME/celery.log --pidfile=/tmp/celery.pid"
+        # sudo -u $PROJ_USER sh -c "cd $WORK_DIR; $CELERY worker -A $PROJ_NAME.settings.celery_settings -D --concurrency=3 --logfile=/var/log/$PROJ_NAME/celery.log --pidfile=/tmp/celery_$PROJ_NAME.pid"
         sudo service nginx restart
         ;;
     stop)

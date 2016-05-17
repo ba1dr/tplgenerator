@@ -84,14 +84,14 @@ LANGUAGES = (
 
 # STATIC AND MEDIA FILES
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(REPO_DIR, 'static')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'public'),
 )
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(REPO_DIR, 'media')
 
 # This would be good to use for file storage, especially user uploads
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3.S3Storage'
