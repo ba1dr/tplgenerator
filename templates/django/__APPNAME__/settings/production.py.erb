@@ -21,8 +21,10 @@ DATABASES = {
     },
 }
 
-BROKER_URL = 'sqla+sqlite:///%s' % os.path.join(BASE_DIR, 'celery_brokerdb.sqlite')
-CELERY_RESULT_BACKEND = 'db+sqlite:///%s' % os.path.join(BASE_DIR, 'celery_resultsdb.sqlite')
+# BROKER_URL = 'sqla+sqlite:///%s' % os.path.join(BASE_DIR, 'celery_brokerdb.sqlite')
+# CELERY_RESULT_BACKEND = 'db+sqlite:///%s' % os.path.join(BASE_DIR, 'celery_resultsdb.sqlite')
+BROKER_URL = 'redis://127.0.0.1:6379/2'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/2'
 
 # Email settings used for email sending
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

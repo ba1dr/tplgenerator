@@ -39,15 +39,15 @@ $ ->
             success: (data, textStatus, jqXHR) ->
                 curpage = page
                 $(pgclass + '.paginated_content').html(data)
-                reinitWidgets()
+                # reinitWidgets()
                 # sorting styling
                 hhh = $(pgclass + "[data-sort=\"#{sortfield}\"]").addClass('sortfield').html()
                 if hhh
                     if "#{ascsort}" == '1'
-                        hhh = hhh.replace('</span></div>', ' <i class=" fa fa-sort-alpha-asc"></i></span></div>')
+                        hhh = hhh.replace('</span></div>', ' <i class=" glyphicon glyphicon-sort-by-attributes"></i></span></div>')
                         $(pgclass + "[data-sort='#{sortfield}']").addClass('sortasc').html(hhh)
                     else
-                        hhh = hhh.replace('</span></div>', ' <i class=" fa fa-sort-alpha-desc"></i></span></div>')
+                        hhh = hhh.replace('</span></div>', ' <i class=" glyphicon glyphicon-sort-by-attributes-alt"></i></span></div>')
                         $(pgclass + "[data-sort='#{sortfield}']").addClass('sortdesc').html(hhh)
             error: (jqXHR, textStatus, error) ->
                 console.log(jqXHR)
@@ -70,9 +70,9 @@ $ ->
     $(document).on 'click', '.filter-reset', () ->
         disableEvents = true
         # $(".list-filter").select2('val', '-')
-        pgclass = $(element).closest('[data-pgclass]').data('pgclass')
-        for selobj in $(pgclass + " .list-filter")
-            $(selobj).select2('val', '-')
+        pgclass = $(this).closest('[data-pgclass]').data('pgclass')
+        for selobj in $(".#{pgclass} .list-filter")
+            $(selobj).val('-').trigger('change')
         disableEvents = false
         navigate(this, 1)
 
@@ -89,3 +89,5 @@ $ ->
         
     $('.paginated_content').each ->
         navigate(this, 1)
+
+    $('.list-filter').select2()

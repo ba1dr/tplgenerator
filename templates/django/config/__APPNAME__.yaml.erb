@@ -11,6 +11,10 @@ DATABASES:
     default:
         ENGINE: django.db.backends.postgresql_psycopg2
         HOST: localhost
+        PORT: 5432
         NAME: <%= @project_name %>
         USER: <%= @project_name %>
         PASSWORD: <%= @project_name %>
+
+BROKER_URL: 'redis://127.0.0.1:6379/2'
+CELERY_RESULT_BACKEND: 'redis://127.0.0.1:6379/2'

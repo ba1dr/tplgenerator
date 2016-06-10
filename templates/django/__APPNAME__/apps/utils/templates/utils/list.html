@@ -6,6 +6,27 @@
 
 <h1>{% block list_title %}List of Objects{% endblock %}</h1>
 
+{% block list_filter %}
+<h3>Filter</h3>
+<div class="row vbottom-parent">
+    <div class="col-md-1 text-center vbottom-cell">
+        <button class="btn btn-warning filter-reset">Reset</button>
+    </div>
+    {% for fname, fld, fvals in filters %}
+    <div class="col-md-2 text-center vbottom-cell">
+        {{ fname.capitalize }}:<br/>
+        <select class="list-filter" name="{{ fld }}">
+            <option value="-">- All -</option>
+            {% for vv in fvals %}
+            <option value="{{ vv }}">{{ vv }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% endfor %}
+    <div class="col-md-3 text-center vbottom-cell">&nbsp;</div>
+</div>
+{% endblock %}
+
 <div class="row">
     <div class="col-md-12 pgmain paginated_content pagination-sortfield"
         data-pgclass="pgmain"

@@ -1,7 +1,8 @@
 #!/bin/bash
 # Build <%= @project_name %>
 
-PYTHON=$WORK_DIR/venv/bin/python
+CUR_DIR=$(dirname $(readlink -f $0))
+PYTHON=$CUR_DIR/venv/bin/python
 
 CUR_DIR=$(dirname $(readlink -f $0))
 
