@@ -27,18 +27,18 @@ case $cmd in
             exit 133
         fi
         sudo chown -R $PROJ_USER: $WORK_DIR
-        sudo -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py collectstatic --noinput"
+        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py collectstatic --noinput"
         DAEMONFLAG="-D"
         STARTMSG="daemon"
         [ "$param1" = "--debug" ] && DAEMONFLAG="" && STARTMSG="interactive"
-        sudo -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON -W ignore $GUNICORN -c $CUR_DIR/config/gunicorn/gunicorn.conf.py --chdir $WORK_DIR $PROJ_NAME.wsgi:application $DAEMONFLAG"
+        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON -W ignore $GUNICORN -c $CUR_DIR/config/gunicorn/gunicorn.conf.py --chdir $WORK_DIR $PROJ_NAME.wsgi:application $DAEMONFLAG"
         if [ $? -ne 0 ]; then
             echo "ERROR starting gunicorn"
             exit 127
         else
             echo "Started $STARTMSG"
         fi
-        # sudo -u $PROJ_USER sh -c "cd $WORK_DIR; $CELERY worker -A $PROJ_NAME.settings.celery_settings -D --concurrency=3 --logfile=/var/log/$PROJ_NAME/celery.log --pidfile=/tmp/celery_$PROJ_NAME.pid"
+        # sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $CELERY worker -A $PROJ_NAME.settings.celery_settings -D --concurrency=3 --logfile=/var/log/$PROJ_NAME/celery.log --pidfile=/tmp/celery_$PROJ_NAME.pid"
         sudo service nginx restart
         ;;
     stop)
@@ -54,6 +54,12 @@ case $cmd in
     reload)
         ps ax | grep gunicorn | grep -v grep | grep -v sudo | awk '{print $1}' | xargs -r sudo kill -s HUP
         sudo service nginx reload
+        ;;
+    migrate)
+        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py migrate"
+        ;;
+    debug)
+        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py shell_plus"
         ;;
     *)
         echo "ERROR, wrong parameter"

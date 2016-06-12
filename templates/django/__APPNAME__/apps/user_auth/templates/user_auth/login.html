@@ -1,54 +1,70 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+{% load staticfiles %}
 
-{% block intro %}
-<div class="intro-md intro-home">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-5">
-                Let's Start Encoding.
-            </div>
-            <div class="col-md-5">
-                <!-- img -->
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
+{% block maincontainer %}
 
+<div class="loginpage site-wrapper">
 
-{% block breadcrumb %}
-<li><a href="{% url 'home' %}">Home</a></li>
-<li class="active">Login</li>
-{% endblock %}
+      <div class="site-wrapper-inner">
+        <div class="cover-container {% block loginclass %}login{% endblock %}">
 
-{% block content %}
-    <div class="row">
-        <div class="col-md-offset-3 col-md-6">
-            <h1 class="page-header">Login</h1>
+          <div class="inner cover">
+            {% block logincontainer %}
+            <p class="lead"><img src="{% static 'img/logo_small.png' %}" class="nav-img img-rounded" id="brandimg"></p>
+            <h1 class="cover-heading">{{ my_company_name }}</h1>
+            <p class="lead">
+            <form class="form-signin" id="login_form" method="post" action="/login/">
+            {% csrf_token %}
+              <h4 class="form-signin-heading">Please sign in</h4>
 
-            {% if error %}
-                <div class="alert alert-danger fade in" role="alert">
-                    <button type="button" class="close" data-dismiss="alert">
-                        <span aria-hidden="true">×</span><span class="sr-only">Close</span>
-                    </button>
-                    {{ error }}
-                </div>
-            {% endif %}
+                {% if error %}
+                    <div class="alert alert-danger fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                        </button>
+                        <span class="fa fa-exclamation-circle"></span> {{ error }}
+                    </div>
+                {% endif %}
 
-            <form role="form" method="post" action="{% url 'login' %}">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ next }}"/>
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
-                </div>
-                <button type="submit" class="btn btn-default">Login</button>
+              <label for="inputEmail" class="sr-only">username</label>
+              <div class="input-group">
+                <span class="input-group-addon"><span class="fa fa-fw fa-user"></span></span>
+                <input class="form-control" name="username" placeholder="User Name"  required autofocus>
+              </div>
+              <label for="inputPassword" class="sr-only">Password</label>
+              <div class="input-group">
+                <span class="input-group-addon"><span class="fa fa-fw fa-key"></span></span>
+                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+              </div>
+              <br/>
+              <button class="btn btn-primary btn-block signinbtn" type="submit"><span class="fa fa-fw fa-sign-in"></span> Sign in</button>
             </form>
+            <br/>
+            <div class="row">
+                <div class="col-md-7">
+                    <a href="{% url 'password_reset' %}" class="">Forgot password?</a>
+                </div>
+                <div class="col-md-5">
+                    <a href="{% url 'register' %}">New user?</a>
+                </div>
+            </div>
+            </p>
+          </div>
+          {% endblock %}
+
+          <div class="mastfoot">
+            <div class="inner">
+              <p>Copyright {% now 'Y' %} © {{ my_company_name }}</p>
+            </div>
+          </div>
+
         </div>
+
+      </div>
+
     </div>
+
+{% endblock %}
+
+{% block footer %}
 {% endblock %}

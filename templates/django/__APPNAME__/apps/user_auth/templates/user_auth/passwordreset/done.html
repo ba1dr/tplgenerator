@@ -1,5 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'user_auth/login.html' %}
+{% load staticfiles %}
 
-{% block content %}
-Password reset done!
-{% endblock %}
+{% block loginclass %}pwreset{% endblock %}
+
+{% block logincontainer %}
+
+            <p class="lead"><img src="{% static 'img/logo_small.png' %}" class="nav-img img-rounded" id="brandimg"></p>
+            <h1 class="cover-heading">{{ my_company_name }}</h1>
+            <p class="lead">
+            <h4 class="form-signin-heading">Password reset done!</h4>
+            <a href="{% url 'login' %}" class="btn btn-primary btn-block">Go to Login page</a>
+            </p>
+{% endblock%}

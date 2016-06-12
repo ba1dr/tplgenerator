@@ -31,7 +31,7 @@
         {% block footer %}
         <footer>
             <div>
-                &nbsp;
+                <p>Copyright {% now 'Y' %} © {{ my_company_name }}</p>
             </div>
         </footer>
         {% endblock %}
@@ -40,10 +40,5 @@
         <script src="{% static 'js/app.js' %}"></script>
         {% block add_js %}{% endblock %}
 
-        {% if debug %}
-            <script type='text/javascript' id="__bs_script__">
-                document.write("<script async src='//HOST:8001/browser-sync/browser-sync-client.2.1.1.js'><\/script>".replace(/HOST/g, location.hostname).replace(/PORT/g, location.port));
-            </script>
-        {% endif %}
     </body>
 </html>
