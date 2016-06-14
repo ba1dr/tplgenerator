@@ -9,10 +9,10 @@
         <div class="cover-container {% block loginclass %}login{% endblock %}">
 
           <div class="inner cover">
-            {% block logincontainer %}
-            <p class="lead"><img src="{% static 'img/logo_small.png' %}" class="nav-img img-rounded" id="brandimg"></p>
+            <p class="lead"><a href="/"><img src="{% static 'img/logo_small.png' %}" class="nav-img img-rounded" id="brandimg"></a></p>
             <h1 class="cover-heading">{{ my_company_name }}</h1>
             <p class="lead">
+            {% block logincontainer %}
             <form class="form-signin" id="login_form" method="post" action="/login/">
             {% csrf_token %}
               <h4 class="form-signin-heading">Please sign in</h4>
@@ -48,9 +48,9 @@
                     <a href="{% url 'register' %}">New user?</a>
                 </div>
             </div>
+          {% endblock %}
             </p>
           </div>
-          {% endblock %}
 
           <div class="mastfoot">
             <div class="inner">

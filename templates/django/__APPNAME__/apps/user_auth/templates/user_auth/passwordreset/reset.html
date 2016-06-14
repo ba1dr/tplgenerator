@@ -4,10 +4,6 @@
 {% block loginclass %}pwreset{% endblock %}
 
 {% block logincontainer %}
-
-            <p class="lead"><img src="{% static 'img/logo_small.png' %}" class="nav-img img-rounded" id="brandimg"></p>
-            <h1 class="cover-heading">{{ my_company_name }}</h1>
-            <p class="lead">
             <form role="form" method="post" action="?">
                 {% csrf_token %}
                 <h4 class="form-signin-heading">Reset Password</h4>
@@ -28,5 +24,4 @@
               <br/>
                 <button class="btn btn-primary btn-block" type="submit"><span class="fa fa-fw fa-envelope-o"></span> Send Reset Email</button>
             </form>
-            </p>
 {% endblock%}
