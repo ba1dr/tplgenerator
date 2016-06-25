@@ -1,0 +1,16 @@
+{% extends 'user_auth/login.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block loginclass %}register{% endblock %}
+
+{% block logincontainer %}
+<p class="text-center">
+Public registration is not allowed yet.
+</p>
+
+<p class="text-center">
+Please contact our Support Team to open an account.
+</p>
+<a href="{% url 'login' %}" class="btn btn-primary btn-block">Go to Login page</a>
+{% endblock %}

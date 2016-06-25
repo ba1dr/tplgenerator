@@ -92,4 +92,11 @@ urlpatterns = [
         ),
         name='registration_complete'
     ),
+    url(
+        r'^register/not_allowed/$',
+        TemplateView.as_view(
+            template_name='user_auth/registration/disallowed.html'
+        ),
+        name='registration_disallowed'
+    ),
 ]

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.forms import CheckboxInput, TextInput, PasswordInput
-from django.forms.widgets import Widget, NumberInput, Textarea, Select
+from django.forms.widgets import Widget, NumberInput, Textarea, Select, SelectMultiple, CheckboxSelectMultiple
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms.fields import Field, CharField
 from django.forms.utils import flatatt
@@ -73,6 +73,14 @@ class BTSSelectDateWidget(BTSInputMixin, SelectDateWidget):
 
 
 class BTSSelectWidget(BTSInputMixin, Select):
+    pass
+
+
+class BTSMultiSelectWidget(BTSInputMixin, SelectMultiple):
+    pass
+
+
+class BTSMultiChkSelectWidget(BTSInputMixin, CheckboxSelectMultiple):
     pass
 
 

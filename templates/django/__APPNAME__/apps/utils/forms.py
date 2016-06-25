@@ -4,7 +4,8 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
 from utils.widgets import (CheckboxToggleWidget, BTSInputWidget, BTSNumInputWidget, BTSPasswordWidget,
-                           BTSTextArea, BTSSelectWidget, BTSSelectDateWidget)
+                           BTSTextArea, BTSSelectWidget, BTSMultiSelectWidget, BTSSelectDateWidget,
+                           BTSMultiChkSelectWidget)
 
 
 class ImprovedForm(object):
@@ -50,6 +51,7 @@ class ImprovedForm(object):
             is_password = False
             if isinstance(self.fields[fname].widget, forms.PasswordInput):
                 is_password = True
+                widget_args['render_value'] = self.fields[fname].widget.render_value
             if isinstance(self.fields[fname], forms.fields.BooleanField):
                 widget_args.update({
                     #
@@ -64,8 +66,13 @@ class ImprovedForm(object):
                     'placeholder': placeholder, 'css_class': css_class,
                     'error_messages': placeholder
                 })
-                if isinstance(self.fields[fname], forms.fields.ChoiceField):
+                if isinstance(self.fields[fname], forms.fields.MultipleChoiceField):
                     widget_args['choices'] = self.fields[fname].widget.choices
+                    widget_args['attrs'].update({'class': self.add_class(fname, 'select2')})
+                    self.fields[fname].widget = BTSMultiSelectWidget(**widget_args)
+                elif isinstance(self.fields[fname], forms.fields.ChoiceField):
+                    widget_args['choices'] = self.fields[fname].widget.choices
+                    widget_args['attrs'].update({'class': self.add_class(fname, 'select2')})
                     self.fields[fname].widget = BTSSelectWidget(**widget_args)
                 elif isinstance(self.fields[fname], forms.fields.FloatField):
                     # widget_args['attrs'].update({'type': 'number'})
@@ -99,6 +106,8 @@ class ImprovedForm(object):
                 allyears = range(2060, 1900, -1)
                 widget_args['attrs'].update({'class': self.add_class(fname, 'date-field')})
                 self.fields[fname].widget = BTSSelectDateWidget(years=allyears, **widget_args)
+
+            setattr(self.fields[fname], 'fieldtype', self.fields[fname].__class__.__name__.split('.')[-1])
             if False:  # debug
                 print("field %s: type %s, widget %s" %
                       (fname, type(self.fields[fname]), type(self.fields[fname].widget)))
