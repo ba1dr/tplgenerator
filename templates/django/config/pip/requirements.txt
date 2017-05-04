@@ -18,6 +18,9 @@ django_extensions
 django-debug-toolbar
 # git+https://github.com/djsutho/django-debug-toolbar-request-history
 # django-storages==1.1.8
+# channels
+# asgi_redis
+# asgi_rabbitmq
 Werkzeug
 ipython
 

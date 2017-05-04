@@ -2,7 +2,7 @@
 
 from django import forms
 
-from .models import Account
+from .models import User
 
 
 class ProfileForm(forms.Form):
@@ -24,7 +24,7 @@ class ProfileForm(forms.Form):
     def clean_email(self):
         email = self.cleaned_data.get('email')
 
-        if email != self.user.email and Account.objects.get(email=email):
+        if email != self.user.email and User.objects.get(email=email):
             raise forms.ValidationError('That email already exists.')
 
         return email

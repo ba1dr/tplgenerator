@@ -13,13 +13,13 @@ from django.views.decorators.csrf import csrf_exempt
 from utils.decorators import authenticated_redirect
 
 from .forms import ProfileForm
-from .models import Account
+from .models import User
 
 
 @login_required
 def view_profile(request, username):
     """View Profile"""
-    selected_user = Account.objects.get(username=username)
+    selected_user = User.objects.get(username=username)
 
     context = {
         'selected_user': selected_user

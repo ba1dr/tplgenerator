@@ -12,7 +12,7 @@ DEBUG = False
 ALLOWED_HOSTS = []
 ROOT_URLCONF = '<%= @project_name %>.urls'
 WSGI_APPLICATION = '<%= @project_name %>.wsgi.application'
-AUTH_USER_MODEL = 'user_auth.Account'
+AUTH_USER_MODEL = 'user_auth.User'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
@@ -30,6 +30,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'channels'
 ]
 
 THIRD_PARTY_APPS = [
