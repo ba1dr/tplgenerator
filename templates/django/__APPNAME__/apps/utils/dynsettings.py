@@ -11,17 +11,18 @@ import yaml
 # import json
 
 
-def import_settings(fname="settings.yaml"):
-    if not os.path.exists(fname):
-        return
+def import_settings(fname="settings.yaml", defaults=None):
+    ydata = load_settings(fname, defaults)
+    # if not os.path.exists(fname):
+    #     return
     flocals = sys._getframe().f_back.f_locals
     # mname = sys._getframe().f_back.f_globals['__name__']
-    ydata = []
-    with open(fname, 'r') as ysfile:
-        if fname.endswith('.yaml'):
-            ydata = yaml.load(ysfile.read())
-        elif fname.endswith('.json'):
-            ydata = json.loads(ysfile.read())
+    # ydata = []
+    # with open(fname, 'r') as ysfile:
+    #     if fname.endswith('.yaml'):
+    #         ydata = yaml.load(ysfile.read())
+    #     elif fname.endswith('.json'):
+    #         ydata = json.loads(ysfile.read())
     if ydata:
         for p in ydata:
             pname = p
@@ -66,21 +67,28 @@ def dict_chainget(obj, *chain):
     return dict_chainget(obj[chain[0]], *chain[1:])
 
 
+def _get_fcontent(fname):
+    ydata = {}
+    if not fname or not os.path.exists(fname):
+        return {}
+    with open(fname, 'r') as ysfile:
+        if fname.endswith('.yaml'):
+            ydata = yaml.load(ysfile.read())
+        elif fname.endswith('.json'):
+            ydata = json.loads(ysfile.read())
+    return ydata
+
+
 def load_settings(settings_file='settings.yaml', defaultsettings_file='settings.default.yaml'):
     CUR_DIR = os.path.dirname(os.path.abspath(__file__))
     _defaultsettings_file = defaultsettings_file
-    if not _defaultsettings_file.startswith('/'):  # not absolute path
+    if _defaultsettings_file and not _defaultsettings_file.startswith('/'):  # not absolute path
         _defaultsettings_file = os.path.join(CUR_DIR, _defaultsettings_file)
     _settings_file = settings_file
     if not _settings_file.startswith('/'):  # not absolute path
         _settings_file = os.path.join(CUR_DIR, _settings_file)
 
-    ds, s = {}, {}
-    if os.path.exists(_defaultsettings_file):
-        with open(_defaultsettings_file, 'r') as sf:
-            ds = yaml.load(sf.read())
-    if os.path.exists(_settings_file):
-        with open(_settings_file, 'r') as sf:
-            s = yaml.load(sf.read())
+    ds = _get_fcontent(_defaultsettings_file)
+    s = _get_fcontent(_settings_file)
     s = _dictmerge(ds, s)
     return s

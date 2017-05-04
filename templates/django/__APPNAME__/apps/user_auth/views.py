@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from utils.decorators import authenticated_redirect
 
-from .forms import ProfileForm, AvatarForm
+from .forms import ProfileForm
 from .models import Account
 
 
@@ -100,8 +100,8 @@ def auth_login(request):
 
     context = {
         'error': error,
-        REDIRECT_FIELD_NAME: request.GET.get(REDIRECT_FIELD_NAME,
-                                             request.POST.get(REDIRECT_FIELD_NAME, '/'))
+        'redirect_field_name': REDIRECT_FIELD_NAME,
+        'nextpage': request.GET.get(REDIRECT_FIELD_NAME, request.POST.get(REDIRECT_FIELD_NAME, '/'))
     }
 
     return render(request, 'user_auth/login.html', context)

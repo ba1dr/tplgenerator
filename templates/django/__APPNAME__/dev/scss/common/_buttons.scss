@@ -3,3 +3,32 @@
  *
  * Button stylings.
  */
+
+.not-implemented {
+    // like '.disabled'
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+a.disabled {
+    color: inherit;
+}
+
+a.dotted {
+     border-bottom: 1px dotted;
+}
+a.dotted:hover {
+     border-bottom: 1px solid;
+     text-decoration: none;
+}
+
+a.navbar-link {
+    color: #777;
+}
+a.navbar-link:hover {
+    text-decoration: none;
+}
+a.hover-bordered:hover {
+    border: 1px #999999 solid;
+}

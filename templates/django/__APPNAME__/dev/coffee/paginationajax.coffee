@@ -2,7 +2,8 @@
 $ ->
     # navigation
     curpage = 1
-    disableEvents = false
+    disableEvents = true
+    autorefresh = false
 
     navigate = (element, page, sort_data) ->
         pgclass = $(element).data('pgclass')
@@ -10,11 +11,14 @@ $ ->
             pgclass = $(element).closest('[data-pgclass]').data('pgclass')
         if pgclass
             pgclass = ".#{pgclass} "
-        page = page or 1
+        page = page or curpage
         lfilters = ""
         for lfo in $(pgclass + '.list-filter')
             fname = $(lfo).attr('name')
+            type = $(lfo).attr('type')
             fvalue = $(lfo).val()
+            if type == 'checkbox'
+                fvalue = $(lfo).data("bootstrap-switch").state()
             if fvalue && fvalue != '-'
                 lfilters += "&filters[]=#{fname}*#{fvalue}"
         extravars = ""
@@ -33,13 +37,15 @@ $ ->
         source_url = $(pgclass + '.paginated_content').data('source-url')
         if not source_url
             source_url = window.location.pathname
-        $.ajax source_url + "?&page="+page+lfilters+"&sort=#{sortfield}&sortasc=#{ascsort}"+extravars,
+        data_url = "&page="+page+lfilters+"&sort=#{sortfield}&sortasc=#{ascsort}"+extravars
+        $(pgclass + '.paginated_content').data('current_data_url', data_url)
+        $.ajax source_url + "?" + data_url,
             type: 'GET'
             dataType: 'html'
             success: (data, textStatus, jqXHR) ->
                 curpage = page
                 $(pgclass + '.paginated_content').html(data)
-                reinitWidgets()
+                reinitWidgets(pgclass + '.paginated_content')
                 # sorting styling
                 hhh = $(pgclass + "[data-sort=\"#{sortfield}\"]").addClass('sortfield').html()
                 if hhh
@@ -57,6 +63,16 @@ $ ->
 
     window.navigate = navigate
 
+    $('#navautorefresh').on 'switchChange.bootstrapSwitch', (event, state) ->
+        if state
+            autorefresh = true
+            start_refresh(10000)
+        else
+            autorefresh = false
+
+    $('#navrefresh').click ->
+        navigate('.paginated_content')
+
     $(document).on 'click', '.listnav', () ->
         nextpage = $(this).data('page')
         if !nextpage
@@ -64,6 +80,10 @@ $ ->
         navigate(this, nextpage)
 
     $(document).on 'change', '.list-filter', () ->
+        if not disableEvents
+            navigate(this, 1)
+
+    $('.list-filter').on 'switchChange.bootstrapSwitch', (event, state) ->
         if not disableEvents
             navigate(this, 1)
 
@@ -89,3 +109,20 @@ $ ->
         
     $('.paginated_content').each ->
         navigate(this, 1)
+
+    # to prevent event on initialization
+    setTimeout ->
+        disableEvents = false
+    , 1000
+
+    window.start_refresh = (seconds) ->
+        if not seconds
+            seconds = 30000
+        if not autorefresh
+            return false
+        navigate('.paginated_content')
+        setTimeout ->
+            start_refresh seconds
+        , seconds
+        true
+

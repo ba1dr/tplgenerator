@@ -16,7 +16,8 @@ import argparse
 logger = logging.getLogger('log')
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)
-ch.setFormatter(logging.Formatter('%(asctime)-15s\t%(levelname)s\t %(message)s'))
+log_format = "%(asctime)-15s\t%(levelname)s\t %(message)s"
+ch.setFormatter(logging.Formatter(log_format))
 logger.addHandler(ch)
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -45,14 +46,24 @@ def get_config(cfgpath):
 def main():
     global debugmode
     args = parser.parse_args()
+    loglevel = logging.INFO
     if args.debug:
-        logger.setLevel(logging.DEBUG)
+        loglevel = logging.DEBUG
+        logger.setLevel(loglevel)
         debugmode = True
     if args.quiet:
-        logger.setLevel(logging.ERROR)
+        loglevel = logging.ERROR
+        logger.setLevel(loglevel)
         debugmode = False
 
     config = get_config(args.config)
+    logconfig = config.get('logging', {})
+    log_file = logconfig.get('log_file')
+    if log_file:
+        fh = logging.FileHandler(log_file)
+        fh.setLevel(loglevel)
+        fh.setFormatter(logging.Formatter(log_format))
+        logger.addHandler(fh)
 
     pass  # TODO
 

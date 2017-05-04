@@ -1,4 +1,8 @@
 
+body, html {
+    font-family: "Open Sans",Calibri,Arial;
+}
+
 footer {
     width: 100%;
     text-align: center;
@@ -33,43 +37,41 @@ footer {
     float: none;
 }
 
-.form-group .select2.select2-container {
-    position: relative;
-    width: 100% !important;
-    display: table-cell;
-}
-.form-group .select2.select2-container span.selection .select2-selection--single{
-    height: 100% !important;
-}
-
 .brand
 {
   background: url($static_url + '/img/logo_small.png') no-repeat left center;
-  background-size: 40px 37px;
+  background-size: 37px 37px;
   background-position: 0px 5px;
   padding-left: 40px;
   padding-right: 10px;
   margin-right: 20px;
-  height: 44px;
+  height: 43px;
   width: 140px;
 }
 
-td.leftcol {
+td.leftcol, th.leftcol {
     text-align: right;
     padding-right: 10px;
     padding-top: 12px;
     padding-bottom: 8px;
     font-weight: bold;
 }
-td.rightcol {
+td.rightcol, th.rightcol {
     text-align: left;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+td.leftcol small {
+    font-weight: normal;
 }
 
 .xtooltip {
     cursor: pointer;
     padding-right: 10px;
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 table.text-center tr th {
@@ -158,4 +160,46 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 
 .mfa-width-fix{
   width: 16px;
+}
+
+
+fieldset.border {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+}
+
+legend.border {
+    width: inherit; /* Or auto */
+    padding: 0 10px; /* To give a bit of padding on the left and right */
+    border-bottom: none;
+    font-size: 18px;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+.dropdown-menu li a {
+    padding: 10px 20px;
+}
+
+ol, ul {
+  margin-bottom: 0px;
+}
+
+.text-middle, table.text-middle tr td {
+    vertical-align: middle;
+}
+
+.bold {
+    font-weight: bold;
 }

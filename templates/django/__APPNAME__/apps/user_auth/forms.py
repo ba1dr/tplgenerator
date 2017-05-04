@@ -36,28 +36,3 @@ class ProfileForm(forms.Form):
 
         self.user.save()
         return self.user
-
-
-class AvatarForm(forms.ModelForm):
-    """Avatar Form"""
-    class Meta:
-        model = Account
-        fields = ('avatar',)
-
-    def __init__(self, *args, **kwargs):
-        """Intialize Form"""
-        self.user = kwargs.pop('user')
-
-        # Get Avatar Upload
-        if args[1] is not None:
-            self.avatar = args[1]['avatar']
-
-        super(AvatarForm, self).__init__(*args, **kwargs)
-
-    def save(self, commit=False):
-        profile = super(AvatarForm, self).save(commit)
-
-        self.user.avatar = self.avatar
-        self.user.save()
-
-        return self.user

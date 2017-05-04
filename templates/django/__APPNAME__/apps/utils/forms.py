@@ -59,18 +59,22 @@ class ImprovedForm(object):
                 self.fields[fname].required = False  # to allow False values to be accepted
                 self.fields[fname].widget = CheckboxToggleWidget(**widget_args)
             elif isinstance(self.fields[fname], (forms.fields.CharField, forms.fields.IntegerField,
-                                                 forms.fields.ChoiceField,)):
+                                                 forms.fields.ChoiceField, forms.fields.TypedChoiceField,
+                                                 forms.fields.MultipleChoiceField,
+                                                 forms.fields.TypedMultipleChoiceField,
+                                                 )):
                 placeholder = "This field is required" if self.fields[fname].required else self.fields[fname].help_text
                 css_class = ""
                 widget_args.update({
                     'placeholder': placeholder, 'css_class': css_class,
                     'error_messages': placeholder
                 })
-                if isinstance(self.fields[fname], forms.fields.MultipleChoiceField):
+                if isinstance(self.fields[fname], (forms.fields.MultipleChoiceField,
+                                                   forms.fields.TypedMultipleChoiceField)):
                     widget_args['choices'] = self.fields[fname].widget.choices
                     widget_args['attrs'].update({'class': self.add_class(fname, 'select2')})
                     self.fields[fname].widget = BTSMultiSelectWidget(**widget_args)
-                elif isinstance(self.fields[fname], forms.fields.ChoiceField):
+                elif isinstance(self.fields[fname], (forms.fields.ChoiceField, forms.fields.TypedChoiceField)):
                     widget_args['choices'] = self.fields[fname].widget.choices
                     widget_args['attrs'].update({'class': self.add_class(fname, 'select2')})
                     self.fields[fname].widget = BTSSelectWidget(**widget_args)

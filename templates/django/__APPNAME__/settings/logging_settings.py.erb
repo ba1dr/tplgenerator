@@ -18,7 +18,13 @@ def get_logging_config(app_name, log_folder, apps=None, debug=False):
             'file': {
                 'level': 'DEBUG',
                 'class': 'logging.FileHandler',
-                'filename': log_folder + '/webdebug.log',
+                'filename': log_folder + '/mainlog.log',
+                'formatter': 'verbose',
+            },
+            'celeryfile': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': log_folder + '/tasks.log',
                 'formatter': 'verbose',
             },
             'console': {
@@ -28,13 +34,18 @@ def get_logging_config(app_name, log_folder, apps=None, debug=False):
             },
         },
         'loggers': {
-            # 'django': {
-            #     'handlers': ['file', ],
-            #     'level': 'INFO',
-            #     'propagate': True,
-            # },
+            'django': {
+                'handlers': ['file', ],
+                'level': 'INFO',
+                'propagate': True,
+            },
             'main': {
                 'handlers': ['file', ],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+            'tasks': {
+                'handlers': ['celeryfile', ],
                 'level': 'DEBUG',
                 'propagate': True,
             },

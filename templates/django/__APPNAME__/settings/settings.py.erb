@@ -13,13 +13,21 @@
 
 import os
 from ..apps.utils.dynsettings import import_settings
+from .django import *
 from .local import *
-
-if not os.path.exists(LOCAL_SETTINGS_FILE):
-    raise Exception("Local setting sile %s not found!" % LOCAL_SETTINGS_FILE)
-
-import_settings(LOCAL_SETTINGS_FILE)
 
 from .logging_settings import get_logging_config
 
-LOGGING = get_logging_config(APP_NAME, LOG_FOLDER, apps=LOCAL_APPS, debug=DEBUG)
+#
+# ACTIONS
+# DO NOT ADD ANYTHING BELOW THIS LINE
+#
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + APPS + LOCAL_APPS
+
+import_settings(settings_file, default_settings_file)  # redefine
+
+LOGGING = get_logging_config('<%= @project_name %>', LOG_FOLDER, apps=APPS + LOCAL_APPS, debug=DEBUG)
+logging.config.dictConfig(LOGGING)
+
+# logger by default
+default_logger = logging.getLogger("main")

@@ -18,11 +18,16 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
-                        <li><p class="navbar-text">{% if user.avatar %}<img src="{{ user.avatar.url }}" class="img img-rounded" height="28" width="28" alt="Profile Picture" />{% endif %} Logged in as <strong><a href="{% url 'view-profile' user.username %}">{{ user.get_identification }}</a></strong></p></li>
-                    <li><form class="navbar-form navbar-right" role="form" method="post" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class=""><span class="fa fa-sign-out"></span> Logout</button>
-                    </form></li>
+                        <li><div class="btn-group">
+                            <a class="btn navbar-btn dropdown-toggle navbar-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="fa fa-user"></span> <strong>{{ user.get_identification }} <span class="caret"></span></strong></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'view-profile' user.username %}"><span class="fa fa-fw fa-user"></span> My Account</a></li>
+                                <li><form class="navbar-text" role="form" method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn navbar-btn btn-default"><span class="fa fa-sign-out"></span> Logout</button>
+                                </form></li>
+                            </ul>
+                        </div></li>
                     {% endif %}
                     {% if not user.is_authenticated %}
                         <li><a href="{% url 'login' %}" class="">Login</a></li>

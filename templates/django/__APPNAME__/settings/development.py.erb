@@ -13,12 +13,10 @@ SECRET_KEY = '<%= randkey %>'
 DEBUG = True
 # TEMPLATE_DEBUG = True
 
-APPS = (
+LOCAL_APPS = [
     # 'debug_toolbar',
-    'django_extensions',
-)
-
-INSTALLED_APPS += APPS
+    # 'django_extensions',
+]
 
 INTERNAL_IPS = ('127.0.0.1',)
 
@@ -54,11 +52,11 @@ DEBUG_TOOLBAR_CONFIG = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(REPO_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(ROOT_DIR, 'db.sqlite3'),
     },
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-BROKER_URL = 'sqla+sqlite:///%s' % os.path.join(REPO_DIR, 'celery_brokerdb.sqlite')
-CELERY_RESULT_BACKEND = 'db+sqlite:///%s' % os.path.join(REPO_DIR, 'celery_resultsdb.sqlite')
+BROKER_URL = 'sqla+sqlite:///%s' % os.path.join(ROOT_DIR, 'celery_brokerdb.sqlite')
+CELERY_RESULT_BACKEND = 'db+sqlite:///%s' % os.path.join(ROOT_DIR, 'celery_resultsdb.sqlite')

@@ -4,3 +4,44 @@
  * Form stylings.
  */
 
+ul.errorlist li {
+    color: red;
+}
+
+.form-group .select2.select2-container {
+    position: relative;
+    width: 100% !important;
+    // width: inherit !important;
+    // display: table-cell;
+}
+.form-group .select2.select2-container span.selection .select2-selection--single{
+    // height: 100% !important;
+}
+
+.fieldrow.field-MultipleChoiceField td .select2.select2-container,
+.fieldrow.field-TypedMultipleChoiceField td .select2.select2-container {
+    // position: relative;
+    width: 100% !important;
+    // display: table-cell;
+}
+.fieldrow.field-DateField td .select2.select2-container {
+    width: 30% !important;
+}
+
+.form-group .bootstrap-switch {
+    margin: 2px 4px;
+}
+
+.runparameters_form {
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.deliveryhour.form-group .select2.select2-container {
+    // position: relative;
+    // width: 100% !important;
+    // display: table-cell;
+}
+.deliveryhour.form-group .select2.select2-container span.selection .select2-selection--single {
+    // height: 100% !important;
+}

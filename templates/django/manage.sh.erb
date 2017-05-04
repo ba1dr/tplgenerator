@@ -3,11 +3,15 @@
 CUR_DIR=$(dirname $(readlink -f $0))
 WORK_DIR=$CUR_DIR
 PROJ_NAME=<%= @project_name %>
-# USER=gunicorn
+# PROJ_USER=gunicorn
 PROJ_USER=<%= @project_name %>
-PYTHON=$WORK_DIR/venv/bin/python
-CELERY=$WORK_DIR/venv/bin/celery
-GUNICORN=$WORK_DIR/venv/bin/gunicorn
+VENV=$(dirname $WORK_DIR)/venv
+PYTHON=$VENV/bin/python
+CELERY=$VENV/bin/celery
+GUNICORN=$VENV/bin/gunicorn
+LOGDIR=/var/log/<%= @project_name %>
+LOGLEVEL=INFO
+# LOGLEVEL=DEBUG
 
 # init sudo
 sudo echo "" > /dev/null
@@ -38,7 +42,7 @@ case $cmd in
         else
             echo "Started $STARTMSG"
         fi
-        # sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $CELERY worker -A $PROJ_NAME.settings.celery_settings -D --concurrency=3 --logfile=/var/log/$PROJ_NAME/celery.log --pidfile=/tmp/celery_$PROJ_NAME.pid"
+        # sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $CELERY worker -A $PROJ_NAME.settings.celery_settings -D -Ofair --concurrency=3 --logfile=$LOGDIR/celery.log --pidfile=/tmp/celery_$PROJ_NAME.pid -n common.%h -l $LOGLEVEL -B"
         sudo service nginx restart
         ;;
     stop)
@@ -53,10 +57,24 @@ case $cmd in
         ;;
     reload)
         ps ax | grep gunicorn | grep -v grep | grep -v sudo | awk '{print $1}' | xargs -r sudo kill -s HUP
+        ps ax | grep celery | grep -v grep | grep -v sudo | awk '{print $1}' | xargs -r sudo kill -s HUP
         sudo service nginx reload
+        ;;
+    flower)
+        echo "Starting Flower (interactive!)"
+        FLOWER_SOCKET_FILE=/tmp/modis_flower.socket
+        # fix permissions (600 by default - tornado's issue)
+        sh -c "sleep 3; sudo chmod 666 $FLOWER_SOCKET_FILE" &
+        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $CELERY flower -A $PROJ_NAME.settings.celery_settings --logfile=$LOGDIR/flower.log --pidfile=/tmp/flower.pid -n flower.%h --unix_socket=$FLOWER_SOCKET_FILE"
+        ;;
+    command)
+        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON manage.py $param1 $*"
         ;;
     migrate)
         sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py migrate"
+        ;;
+    celery)
+        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $CELERY -A $PROJ_NAME.settings.celery_settings $param1 $*"
         ;;
     debug)
         sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py shell_plus"
