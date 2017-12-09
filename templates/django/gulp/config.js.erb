@@ -58,6 +58,7 @@ module.exports = {
             src + 'coffee/**/*.coffee',
         ],
         dest: src + 'js',
+        pubdest: dest + 'js',
         settings: {
             bare: true
         }
@@ -99,6 +100,11 @@ module.exports = {
         ]
     },
 
+    themes: {
+        src: 'node_modules/bootswatch',
+        dest: dest + 'css/themes'
+    },
+
     // Third-Party
     third_party: {
         dest: {
@@ -121,7 +127,7 @@ module.exports = {
         ],
         css: [
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
-            'node_modules/bootswatch/' + bootswatch_theme + '/bootstrap.min.css',
+            // 'node_modules/bootswatch/' + bootswatch_theme + '/bootstrap.min.css',
             'node_modules/font-awesome/css/font-awesome.min.css',
             'node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
             "node_modules/select2/dist/css/select2.min.css"
@@ -139,6 +145,6 @@ module.exports = {
             'node_modules/font-awesome/fonts/fontawesome-webfont.woff',
             'node_modules/font-awesome/fonts/fontawesome-webfont.woff2'
         ],
-        statics: src + '../static/**/*',
+        statics: src + 'static/**/*',
     }
 }

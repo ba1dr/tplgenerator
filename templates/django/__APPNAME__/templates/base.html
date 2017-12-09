@@ -16,6 +16,9 @@
         {% block add_css %}{% endblock %}
 
         <link rel="stylesheet" href="{% static 'css/dependencies.min.css' %}">
+        {% with 'css/themes/'|add:theme_name|add:'.min.css' as themecss %}
+        <link rel="stylesheet" href="{% static themecss %}">
+        {% endwith %}
         <link rel="stylesheet" href="{% static 'css/screen.css' %}">
     </head>
     <body>

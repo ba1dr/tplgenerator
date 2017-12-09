@@ -5,11 +5,7 @@
 {% block content %}
     <div class="row">
 
-        <ul class="nav nav-tabs">
-            <li><a href="{% url 'view-profile' username=user.username %}">Information</a></li>
-            <li><a href="{% url 'change_password' %}">Change Password</a></li>
-            <li class="active"><a href="{% url 'edit-avatar' %}">Edit Profile Picture</a></li>
-        </ul>
+        {% with 'avatar' as usertab %}{% include 'user_tabs.html' %}{% endwith %}
 
         <div class="col-md-offset-3 col-md-6">
             <h1 class="page-header">Update Profile Image</h1>

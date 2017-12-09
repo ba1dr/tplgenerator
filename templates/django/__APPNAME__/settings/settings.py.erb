@@ -23,6 +23,8 @@ from .logging_settings import get_logging_config
 # DO NOT ADD ANYTHING BELOW THIS LINE
 #
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + APPS + LOCAL_APPS
+if 'debug_toolbar' in INSTALLED_APPS:
+    MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware', ] + MIDDLEWARE
 
 import_settings(settings_file, default_settings_file)  # redefine
 

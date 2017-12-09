@@ -37,7 +37,10 @@ $ ->
         source_url = $(pgclass + '.paginated_content').data('source-url')
         if not source_url
             source_url = window.location.pathname
-        data_url = "&page="+page+lfilters+"&sort=#{sortfield}&sortasc=#{ascsort}"+extravars
+        refreshstate = false
+        if $('#navautorefresh').length > 0
+            refreshstate = $('#navautorefresh').bootstrapSwitch('state')
+        data_url = "&page="+page+lfilters+"&sort=#{sortfield}&sortasc=#{ascsort}"+extravars+"&arefresh=#{refreshstate}"
         $(pgclass + '.paginated_content').data('current_data_url', data_url)
         $.ajax source_url + "?" + data_url,
             type: 'GET'
@@ -63,14 +66,14 @@ $ ->
 
     window.navigate = navigate
 
-    $('#navautorefresh').on 'switchChange.bootstrapSwitch', (event, state) ->
+    $(document).on 'switchChange.bootstrapSwitch', '#navautorefresh', (event, state) ->
         if state
             autorefresh = true
             start_refresh(10000)
         else
             autorefresh = false
 
-    $('#navrefresh').click ->
+    $(document).on 'click', '#navrefresh', () ->
         navigate('.paginated_content')
 
     $(document).on 'click', '.listnav', () ->

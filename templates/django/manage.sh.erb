@@ -71,13 +71,13 @@ case $cmd in
         sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON manage.py $param1 $*"
         ;;
     migrate)
-        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py migrate"
+        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py migrate $param1 $*"
         ;;
     celery)
         sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $CELERY -A $PROJ_NAME.settings.celery_settings $param1 $*"
         ;;
     debug)
-        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py shell_plus"
+        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py shell_plus $param1 $*"
         ;;
     *)
         echo "ERROR, wrong parameter"

@@ -4,7 +4,18 @@
 {% block content %}
 <div class="pgmain" data-pgclass="pgmain">
 
-<h1>{% block list_title %}List of Objects{% endblock %}</h1>
+<div class="row">
+    <div class="col-md-4">
+        <h1>{% block list_title %}List of Objects{% endblock %}</h1>
+    </div>
+    <div class="col-md-8 h3">
+        {% block main_action_buttons %}
+        {% block list_autorefresh_chk %}
+        <label class="pull-right col-md-offset-1 h5"> Auto Refresh <input type="checkbox" class="toggle-chkbox" id="navautorefresh" data-size="mini" name="autorefresh"></label>{% endblock %}
+        {% block list_reload_btn %}<button type="button" class="btn btn-default pull-right" id="navrefresh"><span class="fa fa-refresh"></span> Refresh</button>{% endblock %}
+        {% endblock %}
+    </div>
+</div>
 
 {% block list_filter %}
 {% if filters %}
@@ -16,7 +27,7 @@
     {% for fname, fld, fvals in filters %}
     <div class="col-md-2 text-center vbottom-cell">
         {{ fname.capitalize }}:<br/>
-        <select class="list-filter" name="{{ fld }}">
+        <select class="list-filter select2" name="{{ fld }}">
             <option value="-">- All -</option>
             {% for vv in fvals %}
             <option value="{{ vv }}">{{ vv }}</option>

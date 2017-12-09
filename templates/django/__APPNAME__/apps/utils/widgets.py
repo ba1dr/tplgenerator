@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.forms import CheckboxInput, TextInput, PasswordInput
-from django.forms.widgets import Widget, NumberInput, Textarea, Select, SelectMultiple, CheckboxSelectMultiple
-from django.forms.extras.widgets import SelectDateWidget
+from django.forms.widgets import (Widget, NumberInput, Textarea, Select, SelectMultiple,
+                                  CheckboxSelectMultiple, SelectDateWidget)
 from django.forms.fields import Field, CharField
 from django.forms.utils import flatatt
 from django.utils.html import format_html

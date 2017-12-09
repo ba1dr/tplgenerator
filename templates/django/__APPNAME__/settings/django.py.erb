@@ -22,7 +22,7 @@ DJANGO_APPS = [
     # 'admin_tools.theming',
     # 'admin_tools.menu',
     # 'admin_tools.dashboard',
-    'suit',
+    # 'suit',
     # 'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,18 +43,16 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
 ]
 
-# MIDDLEWARE
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-)
+]
 
 # INTERNATIONALIZATION
 LANGUAGE_CODE = 'en-us'

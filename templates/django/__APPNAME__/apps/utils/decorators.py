@@ -27,7 +27,7 @@ def authenticated_redirect(view_func=None, path=None):
         if path == request.path.replace('/', ''):
             return redirect(default_path)
 
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return redirect(path or default_path)
 
         return view_func(request, *args, **kwargs)

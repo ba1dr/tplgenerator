@@ -5,7 +5,7 @@ var outputLogo  = require('../utils/outputLogo');
 
 outputLogo();
 
-gulp.task('build', ['coffee', 'browserify', 'sass', 'imageOptimize', 'third_party'], function(){
+gulp.task('build', ['coffee', 'browserify', 'sass', 'imageOptimize', 'third_party', 'themes'], function(){
     global.isBuilding = false;
 
     // Delete lingering compiled coffeescript src

@@ -1,0 +1,6 @@
+<ul class="nav nav-tabs">
+    <li class="{% if usertab == 'info' %}active{% endif %}"><a href="{% url 'view-profile' username=user.username %}">Information</a></li>
+    <li class="{% if usertab == 'passw' %}active{% endif %}"><a href="{% url 'change_password' %}">Change Password</a></li>
+    <!-- <li class="{% if usertab == 'avatar' %}active{% endif %}"><a href="{% url 'edit-avatar' %}">Edit Profile Picture</a></li> -->
+    <li class="{% if usertab == 'settings' %}active{% endif %}"><a href="{% url 'user-settings' %}">Settings</a></li>
+</ul>

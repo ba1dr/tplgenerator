@@ -4,7 +4,7 @@ import os
 
 from django.contrib.auth import authenticate, login, logout, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, DetailView, FormView
@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from utils.decorators import authenticated_redirect
 
-from .forms import ProfileForm
+from .forms import ProfileForm, UserSettingsForm
 from .models import User
 
 
@@ -113,3 +113,28 @@ def auth_logout(request):
     """Logout"""
     logout(request)
     return redirect('home')
+
+
+class UserSettingsView(TemplateView):
+    template_name = 'user_settings.html'
+
+    def get_object(self):
+        self.object = self.request.user
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        if self.request.method == 'POST':
+            context['form'] = UserSettingsForm(self.request.POST)
+        else:
+            initial = {
+                'theme': self.request.session.get('theme_name')
+            }
+            context['form'] = UserSettingsForm(initial=initial)
+        return context
+
+    def post(self, *args, **kwargs):
+        form = UserSettingsForm(self.request.POST)
+        if form.is_valid():
+            self.request.session['theme_name'] = form.data['theme']
+        return redirect(reverse('user-settings'))
+        # return super().post(*args, **kwargs)

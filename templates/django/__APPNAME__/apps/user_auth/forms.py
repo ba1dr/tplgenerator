@@ -1,8 +1,20 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 from django import forms
 
 from .models import User
+
+
+def get_theme_list():
+    themes = [('default', 'Default')]
+    themes_dir = os.path.join(CUR_DIR, '../..', 'public/css/themes')
+    if os.path.exists(themes_dir):
+        for fname in os.listdir(themes_dir):
+            tname = fname[:-8]
+            themes.append((tname, tname.title()))
+    return themes
 
 
 class ProfileForm(forms.Form):
@@ -36,3 +48,7 @@ class ProfileForm(forms.Form):
 
         self.user.save()
         return self.user
+
+
+class UserSettingsForm(forms.Form):
+    theme = forms.ChoiceField(choices=get_theme_list(), initial='default', required=False)

@@ -6,17 +6,17 @@ psycopg2
 pillow
 # uuid
 
-django-appconf==1.0.2
+django-appconf~=1.0
 django-admin-tools
-django==1.11
+django~=1.11
 django-suit
-django-registration-redux==1.6
-django-crispy-forms==1.6
-django-imagekit==4.0
+django-registration-redux~=1.9
+django-crispy-forms~=1.7
+django-imagekit~=4.0
 django-decorator-include
 django_extensions
 django-debug-toolbar
-# git+https://github.com/djsutho/django-debug-toolbar-request-history
+django-debug-toolbar-request-history
 # django-storages==1.1.8
 # channels
 # asgi_redis

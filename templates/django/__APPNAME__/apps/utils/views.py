@@ -5,7 +5,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 from django.views.generic.detail import DetailView, SingleObjectTemplateResponseMixin, BaseDetailView
 from django.shortcuts import redirect, render_to_response
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import Http404
 
 
@@ -82,7 +82,7 @@ class ObjectListBaseView(ListView):
         return qset
 
     def get_pagination_page(self, page=1, maxitems=50, filters=None, sortfield=None, sortasc='1'):
-        items = self.get_queryset()
+        self.objct_list = items = self.get_queryset()
         if filters:
             for ff in filters:
                 ffs = ff.split('*', 1)
@@ -112,11 +112,13 @@ class ObjectListBaseView(ListView):
     def get_context_data(self, **kwargs):
         context = {}
         # context = super().get_context_data()
+        context['enable_list_reload_btn'] = True
         page = kwargs.pop('page', 1)
         maxitems = kwargs.pop('maxitems', 50)
         filters = kwargs.pop('filters', [])
         sortfield = kwargs.pop('sortfield', None)
         sortasc = kwargs.pop('sortasc', None)
+        context['auto_refresh'] = self.request.GET.get('arefresh') == 'true'
         if not self.request.is_ajax():
             lfilter = self.get_filter_vals()
             context['filters'] = lfilter
@@ -151,4 +153,5 @@ class ObjectListBaseView(ListView):
         sortasc = str(request.GET.get('sortasc', '1'))
         context = self.get_context_data(page=page, maxitems=maxitems,
                                         filters=filters, sortfield=sortfield, sortasc=sortasc)
-        return render_to_response(self.content_template_name, context)
+        self.template_name = self.content_template_name
+        return self.render_to_response(context)

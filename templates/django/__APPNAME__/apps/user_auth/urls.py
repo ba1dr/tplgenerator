@@ -3,6 +3,7 @@
 from django.conf.urls import include, url
 from django.views.generic.base import TemplateView
 from django.contrib.auth import views as djauth_v
+from django.contrib.auth.decorators import login_required
 
 from registration.backends.default.views import RegistrationView, ActivationView
 from registration.forms import RegistrationFormUniqueEmail
@@ -14,6 +15,7 @@ from . import views
 urlpatterns = [
     url(r'^login/$', views.auth_login, name='login'),
     url(r'^logout/$', views.auth_logout, name='logout'),
+    url(r'profile/settings/$', login_required(views.UserSettingsView.as_view()), name='user-settings'),
     url(r'profile/edit/$', views.edit_profile, name='edit-profile'),
     url(r'profile/picture/$', views.edit_avatar, name='edit-avatar'),
     url(r'profile/picture/remove/$', views.remove_avatar, name='remove-avatar'),
