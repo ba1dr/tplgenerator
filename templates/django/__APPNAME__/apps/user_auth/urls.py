@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 from django.conf.urls import include, url
 from django.views.generic.base import TemplateView
@@ -11,58 +10,52 @@ from registration.forms import RegistrationFormUniqueEmail
 from utils.decorators import authenticated_redirect
 from . import views
 
-
 urlpatterns = [
-    url(r'^login/$', views.auth_login, name='login'),
-    url(r'^logout/$', views.auth_logout, name='logout'),
-    url(r'profile/settings/$', login_required(views.UserSettingsView.as_view()), name='user-settings'),
-    url(r'profile/edit/$', views.edit_profile, name='edit-profile'),
-    url(r'profile/picture/$', views.edit_avatar, name='edit-avatar'),
-    url(r'profile/picture/remove/$', views.remove_avatar, name='remove-avatar'),
-    url(r'profile/view/(?P<username>[\w0-9-_]+)/$', views.view_profile, name='view-profile'),
+    url(r'^login/$', views.LoginView.as_view(), name='login'),
+    url(r'^logout/$', views.LogOutView.as_view(), name='logout'),
+    url(r'^profile/$', login_required(views.UserProfileView.as_view(mode='view')), name='view-profile'),
+    url(r'^profile/edit/$', views.UserProfileView.as_view(mode='edit'), name='edit-profile'),
+    url(r'^settings/$', login_required(views.UserSettingsView.as_view()), name='settings'),
+
     url(
         r'^reset/$',
-        djauth_v.password_reset,
-        {
+        djauth_v.PasswordResetView.as_view(**{
             'template_name': 'user_auth/passwordreset/reset.html',
             'email_template_name': 'user_auth/passwordreset/email.html',
             'subject_template_name': 'user_auth/passwordreset/subject.txt',
-        },
+        }),
         name='password_reset'
     ),
     url(
         r'^reset/sent/$',
-        djauth_v.password_reset_done,
-        {
+        djauth_v.PasswordResetDoneView.as_view(**{
             'template_name': 'user_auth/passwordreset/sent.html',
-        },
+        }),
         name='password_reset_done'
     ),
     url(
         r'^reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
-        djauth_v.password_reset_confirm,
-        {
+        djauth_v.PasswordResetConfirmView.as_view(**{
             'template_name': 'user_auth/passwordreset/confirm.html',
-        },
+        }),
         name='password_reset_confirm'
     ),
     url(
         r'^reset/done/$',
-        djauth_v.password_reset_complete,
-        {
+        djauth_v.PasswordResetCompleteView.as_view(**{
             'template_name': 'user_auth/passwordreset/done.html',
-        },
+        }),
         name='password_reset_complete'
     ),
     url(
         r'^profile/password/$',
-        djauth_v.password_change,
-        {
+        views.PasswordChangeView.as_view(**{
             'template_name': 'user_auth/change_password.html',
-            'post_change_redirect': 'dashboard',
-        },
+            # 'post_change_redirect': 'dashboard',
+        }),
         name='change_password'
     ),
+    url(r'profile/password/done', djauth_v.PasswordChangeDoneView.as_view(), name='password_change_done'),
     url(
         r'^activate/complete/$',
         TemplateView.as_view(

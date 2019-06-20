@@ -2,22 +2,17 @@
 
 import os
 import time
-import redis
 from functools import wraps
 
 from django.conf import settings
 
+from .redis import create_global_client
+
 __all__ = ('Semaphore', )
 
 
-globalclient = None
-
-
-def create_global_client():
-    global globalclient
-    globalclient = redis.StrictRedis.from_url(settings.SEMAPHORES_REDIS_URL)
-    # print("globalclient", id(globalclient))
-    return globalclient
+class SemaphoreAcquireFailed(Exception):
+    pass
 
 
 def getint(value):
@@ -70,15 +65,16 @@ class Semaphore(object):
     @classmethod
     def new_client(cls):
         # return redis.StrictRedis.from_url(settings.SEMAPHORES_REDIS_URL)
-        if not globalclient:
-            create_global_client()
+        # if not globalclient:
+        return create_global_client()
         # globalclient = redis.StrictRedis.from_url(settings.SEMAPHORES_REDIS_URL)
-        return globalclient
+        # return globalclient
 
-    def __init__(self, names, acquire=False, client=None):
+    def __init__(self, names, acquire=False, client=None, acquire_wait=True):
         self.client = client or self.new_client()
         self.names = to_list(names)
         self.do_acquire = acquire
+        self.acquire_wait = acquire_wait
 
     @classinstmethod
     def check_exists(cls, names=None, client=None):
@@ -155,9 +151,13 @@ class Semaphore(object):
 
     def __enter__(self):
         if self.do_acquire:
-            self.wait_release()
-            while not self.acquire():
-                time.sleep(self.WAIT_PAUSE)
+            if self.acquire_wait:
+                self.wait_release()
+                while not self.acquire():
+                    time.sleep(self.WAIT_PAUSE)
+            else:
+                if not self.acquire():
+                    raise SemaphoreAcquireFailed()
         else:
             for name in self.names:
                 self.set(name, client=self.client)

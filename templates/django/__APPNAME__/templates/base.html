@@ -1,38 +1,63 @@
 {% load staticfiles %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>{% block title %}Hello, world!{% endblock %}</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="author" content="Alexey Kolyanov"/>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}{{ my_company_name|default:'Web Site' }} - {{ page_title|default:'' }}{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Alexey Kolyanov"/>
+    <!-- <link rel="shortcut icon" href="/static/favicon.ico"> -->
+    <link type="text/plain" rel="author" href="{% static 'humans.txt' %}" />
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
 
-        <!-- <link rel="shortcut icon" href="/static/favicon.ico"> -->
-        <link type="text/plain" rel="author" href="{% static 'humans.txt' %}" />
-        <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    {% block add_css %}{% endblock %}
 
-        {% block add_css %}{% endblock %}
-
-        <link rel="stylesheet" href="{% static 'css/dependencies.min.css' %}">
-        {% with 'css/themes/'|add:theme_name|add:'.min.css' as themecss %}
-        <link rel="stylesheet" href="{% static themecss %}">
-        {% endwith %}
-        <link rel="stylesheet" href="{% static 'css/screen.css' %}">
-    </head>
-    <body>
-        {% block maincontainer %}
-        {% include 'partials/nav.html' %}
-        <div class="container-fullwidth">
+    <link rel="stylesheet" href="{% static 'css/dependencies.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/screen.css' %}">
+</head>
+<body class="theme-{{ theme_name }}" id="x-page-top">
+    {% block maincontainer %}
+        <div class="x-container-fullwidth" id="wrapper">
+            {% include 'partials/sidebar.html' %}
+            <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+            {% include 'partials/topbar.html' %}
+            <div class="container-fluid">
             {% block content %}{% endblock %}
-            {% block datasource %}
-            <div class="hidden assets" id="datasource" data-pagetype="unknown">
             </div>
+            </div>
+            <div class="hidden assets" id="datasource" data-pagetype="unknown">
+            {% block datasource %}
+                <div id="wsinfo" data-url="{{ wsurl }}"></div>
             {% endblock %}
+            </div>
+        </div>
         </div>
         <div class="modal-element">
         </div>
+        <!-- Logout Modal-->
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                  <form class="dropdown-item" role="form" method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-default"><span class="fa fa-sign-out"></span> Logout</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         {% endblock %}
 
         {% block footer %}
@@ -44,6 +69,7 @@
         {% endblock %}
 
         <script src="{% static 'js/dependencies.js' %}"></script>
+        <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
         <script src="{% static 'js/app.js' %}"></script>
         {% block add_js %}{% endblock %}
 

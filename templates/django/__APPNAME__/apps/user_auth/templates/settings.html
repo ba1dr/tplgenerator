@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="POST" class="form" action="{% url 'settings' %}">
+{% csrf_token %}
+<div class="row">
+
+</div>
+<br/>
+    <button type="submit" class="btn btn-success"><span class="fas fa-fw fa-check"></span> Save Settings</button>
+</form>
+
+{% endblock %}

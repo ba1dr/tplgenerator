@@ -9,8 +9,10 @@
         <div class="cover-container {% block loginclass %}login{% endblock %}">
 
           <div class="inner cover">
-            <p class="lead"><a href="/"><img src="{% static 'img/logo_small.png' %}" class="nav-img img-rounded" id="brandimg"></a></p>
-            <h1 class="cover-heading">{{ my_company_name }}</h1>
+            <p class="lead"><a href="/">
+                <img height="55" width="228" src="{% static 'img/logo-green.svg' %}" id="brandimg"/>
+            </a></p>
+            <h2 class="cover-heading">{{ my_company_name }}</h2>
             <p class="lead">
             {% block logincontainer %}
             <form class="form-signin" id="login_form" method="post" action="/login/">
@@ -44,9 +46,6 @@
             <div class="row">
                 <div class="col-md-7">
                     <a href="{% url 'password_reset' %}" class="">Forgot password?</a>
-                </div>
-                <div class="col-md-5">
-                    <a href="{% url 'register' %}">New user?</a>
                 </div>
             </div>
           {% endblock %}

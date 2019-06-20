@@ -1,0 +1,69 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "An application app.",
+  "main": "Gulpfile.js",
+  "scripts": {},
+  "repository": {
+    "type": "",
+    "url": ""
+  },
+  "browserslist": [
+      "Edge 16"
+  ],
+  "keywords": [
+    "django",
+    "python",
+    "gulp",
+    "coffeescript",
+    "sass"
+  ],
+  "dependencies": {
+    "bootstrap": "4.3.1",
+    "bootstrap-datepicker": "latest",
+    "bootswatch": "latest",
+    "@fortawesome/fontawesome-free": "5.9.0",
+    "jquery": "latest",
+    "jquery-easing": "latest",
+    "lodash": "latest",
+    "bootstrap-switch": "latest",
+    "select2": "latest",
+    "jquery-form": "latest",
+    "js-cookie": "latest",
+    "moment": "latest",
+    "jquery-mask-plugin": "latest"
+  },
+  "devDependencies": {
+    "browserify": "latest",
+    "chalk": "latest",
+    "del": "latest",
+    "event-stream": "latest",
+    "gulp": "latest",
+    "glob": "latest",
+    "gulp-autoprefixer": "latest",
+    "gulp-cached": "latest",
+    "gulp-coffee": "latest",
+    "gulp-concat": "latest",
+    "gulp-folders": "latest",
+    "gulp-imagemin": "latest",
+    "gulp-load-plugins": "latest",
+    "gulp-notify": "latest",
+    "gulp-rename": "latest",
+    "gulp-if": "latest",
+    "gulp-sass": "latest",
+    "gulp-sourcemaps": "latest",
+    "gulp-uglify": "latest",
+    "gulp-util": "latest",
+    "pretty-hrtime": "latest",
+    "require-dir": "latest",
+    "vinyl-source-stream": "latest",
+    "watchify": "latest",
+    "yargs": "latest"
+  },
+  "author": {
+    "name": "Alexey Kolyanov",
+    "email": "alexey@kolyanov.com",
+    "url": "https://alexey.kolyanov.com/"
+  },
+  "license": "UNLICENSED"
+}

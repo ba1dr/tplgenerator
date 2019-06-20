@@ -73,7 +73,7 @@ def _get_fcontent(fname):
         return {}
     with open(fname, 'r') as ysfile:
         if fname.endswith('.yaml'):
-            ydata = yaml.load(ysfile.read())
+            ydata = yaml.load(ysfile.read(), Loader=yaml.FullLoader)
         elif fname.endswith('.json'):
             ydata = json.loads(ysfile.read())
     return ydata

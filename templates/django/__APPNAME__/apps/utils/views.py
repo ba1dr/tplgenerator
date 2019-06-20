@@ -9,6 +9,15 @@ from django.urls import reverse
 from django.http import Http404
 
 
+class ViewMixin:
+    page_title = ''
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['page_title'] = self.page_title
+        return context
+
+
 class ObjectBaseView(SingleObjectTemplateResponseMixin):
     model = None  # redefine this!
     success_url_name = None
@@ -82,7 +91,7 @@ class ObjectListBaseView(ListView):
         return qset
 
     def get_pagination_page(self, page=1, maxitems=50, filters=None, sortfield=None, sortasc='1'):
-        self.objct_list = items = self.get_queryset()
+        self.object_list = items = self.get_queryset()
         if filters:
             for ff in filters:
                 ffs = ff.split('*', 1)

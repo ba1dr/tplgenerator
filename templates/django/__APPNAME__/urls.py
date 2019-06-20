@@ -7,9 +7,11 @@ from django.views.static import serve as static_serve
 from decorator_include import decorator_include
 
 urlpatterns = [
-    url(r'^', include('landings.urls')),
+    url(r'^', decorator_include(login_required, 'dashboards.urls')),
     url(r'^', include('user_auth.urls')),
     # url(r'^myapp/', decorator_include(login_required, 'myapp.urls')),
+    url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
+    url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
     url(r'^adminweb/', admin.site.urls),
 ]
 

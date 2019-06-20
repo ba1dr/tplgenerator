@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 import os
 import multiprocessing
@@ -6,8 +5,10 @@ import multiprocessing
 # logdir = "/tmp"
 logdir = "/var/log/<%= @project_name %>"
 
-# bind = "127.0.0.1:5000"
-bind = "unix:/tmp/<%= @project_name %>_gunicorn.socket"
+bind = "0.0.0.0:5000"
+# bind = "unix:/tmp/apisocket/gunicorn.socket"
+
+# worker_class = 'aiohttp.worker.GunicornWebWorker'
 
 # Recommended value for 'workers' parameter is in 2-4 x $(NUM_CORES) range
 workers = multiprocessing.cpu_count() * 2 + 1
@@ -24,5 +25,5 @@ errorlog = logdir + "/gunicorn-error.log"
 loglevel = "info"
 proc_name = "<%= @project_name %>-gunicorn"
 timeout = 600
-pidfile = "/tmp/<%= @project_name %>-gunicorn.pid"
+# pidfile = "/tmp/<%= @project_name %>-gunicorn.pid"
 # pidfile = "/tmp/my-gunicorn.pid"

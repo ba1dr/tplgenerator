@@ -1,0 +1,19 @@
+FROM ubuntu:bionic
+
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 PYTHONUNBUFFERED=1 C_FORCE_ROOT=true
+
+WORKDIR /opt/<%= @project_name %>
+
+RUN DEBIAN_FRONTEND=noninteractive \
+    && apt update \
+    && apt install -y \
+        curl \
+        python3 python3-distutils python3-lxml \
+        libxml2-dev libxslt-dev libjpeg-dev libpng-dev libfreetype6-dev zlibc zlib1g-dev libpq-dev \
+    && cd /tmp/ && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py && cd -
+
+COPY config/pip/requirements.txt requirements.txt
+RUN pip3 --no-cache-dir install -U -r requirements.txt
+
+COPY config/gunicorn <%= @project_name %> ./
+ENTRYPOINT ["python3.6", "/usr/local/bin/gunicorn", "-c", "/opt/<%= @project_name %>/gunicorn.conf.py", "--chdir", "/opt", "<%= @project_name %>.wsgi:application"]

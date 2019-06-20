@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+    redis:
+        image: redis:alpine
+        container_name: redis
+        ports:
+            - "6379:6379"
+        command: ["redis-server", "/etc/redis/redis.conf"]
+        environment:
+            - SERVICE_NAME=redis
+        logging:
+            driver: journald
+            # driver: none
+        volumes:
+            - ../redis/redis.conf:/etc/redis/redis.conf
+            - /tmp/redis:/var/run/redis
+            - /var/lib/redis:/data

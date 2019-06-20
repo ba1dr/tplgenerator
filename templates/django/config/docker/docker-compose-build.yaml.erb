@@ -1,0 +1,17 @@
+version: '2.4'
+services:
+    builder:
+        image: djstaticbuilder
+        container_name: djstaticbuilder
+        build:
+            context: ../../
+            dockerfile: ./config/docker/Dockerfile-builder
+        logging:
+            driver: journald
+        volumes:
+            - ../gulp:/opt/staticbuilder/gulp
+            - ../gulp/Gulpfile.js:/opt/staticbuilder/Gulpfile.js
+            - ../../static:/opt/staticbuilder/static
+            - ../../<%= @project_name %>:/opt/staticbuilder/<%= @project_name %>
+        depends_on: []
+        network_mode: host

@@ -1,0 +1,100 @@
+/**
+ * Gulp Configuration
+ *
+ * A set of paths and options for Gulp to properly build our application.
+ */
+// Define Global Variables for our main object
+var dest = './<%= @project_name %>/public/';
+var src = './<%= @project_name %>/dev/';
+
+module.exports = {
+    // Define module variables for easy access to source and destination dirs
+    src: src,
+    dest: dest,
+
+    // Compile our SCSS files
+    sass: {
+        src: [
+            src + 'scss/screen.scss',
+            src + 'scss/**/*.scss'
+        ],
+        dest: dest + 'css',
+        settings: {}
+    },
+
+    // Compile our Coffee files
+    coffee: {
+        src: [
+            src + 'coffee/*.coffee',
+            src + 'coffee/**/*.coffee',
+        ],
+        dest: src + 'js',
+        pubdest: dest + 'js',
+        settings: {
+            bare: true
+        }
+    },
+
+    // Minimize Images
+    images: {
+        src: src + 'img',
+        dest: dest + 'img',
+        // processImages: /\.(gif|jpg|jpeg|tiff|png)$/i,
+        processImages: "*.{ico,gif,jpg,jpeg,tiff,png,svg}",
+        imageminOptions: {
+            progressive: true,
+            svgoPlugins: [{removeViewBox: false}],
+            optimizationLevel: 1
+        }
+    },
+
+    // Handle minimizing JS Files into a single file
+    browserify: {
+        extensions: [],
+        transform: [],
+        bundleConfigs: [
+            {
+              entries: src + 'js/*.js',
+              dest: dest + '/js',
+              pubdest: dest + 'js',
+              outputName: 'app.js'
+            }
+        ]
+    },
+
+    themes: {
+        src: 'node_modules/bootswatch/dist',
+        dest: dest + 'css/themes'
+    },
+
+    // Third-Party
+    third_party: {
+        dest: {
+            js: dest + 'js',
+            css: dest + 'css',
+            fonts: dest + 'webfonts',
+            statics: dest
+        },
+        js: [
+            'node_modules/jquery/dist/jquery.min.js',
+            'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
+            'node_modules/jquery-easing/jquery.easing.*.min.js',
+            'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+            'node_modules/bootstrap-switch/dist/js/bootstrap-switch.min.js',
+            "node_modules/select2/dist/js/select2.full.min.js",
+            "node_modules/jquery-form/dist/jquery.form.min.js",
+            "node_modules/js-cookie/src/js.cookie.js",
+            "node_modules/moment/moment.js",
+            // "node_modules/jquery-mask-plugin/dist/jquery.mask.min.js"
+        ],
+        css: [
+            'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
+            'node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css',
+            "node_modules/select2/dist/css/select2.min.css"
+        ],
+        fonts: [
+            'node_modules/@fortawesome/fontawesome-free/webfonts/*'
+        ],
+        statics: src + 'static/**/*',
+    }
+}

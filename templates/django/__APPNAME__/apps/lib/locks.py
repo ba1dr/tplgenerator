@@ -9,6 +9,7 @@ THISHOST = socket.getfqdn()  # for local locks
 
 
 class KnownLocks(Enum):
+
     CUSTOM_LOCAL_LOCK = {'name': 'custom_lock_%s', 'scope': 'local'}
     CUSTOM_GLOBAL_LOCK = {'name': 'custom_lock_%s', 'scope': 'global'}
 

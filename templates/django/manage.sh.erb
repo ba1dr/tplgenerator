@@ -1,85 +1,39 @@
 #!/bin/bash
 
-CUR_DIR=$(dirname $(readlink -f $0))
-WORK_DIR=$CUR_DIR
-PROJ_NAME=<%= @project_name %>
-# PROJ_USER=gunicorn
-PROJ_USER=<%= @project_name %>
-VENV=$(dirname $WORK_DIR)/venv
-PYTHON=$VENV/bin/python
-CELERY=$VENV/bin/celery
-GUNICORN=$VENV/bin/gunicorn
+CUR_DIR=$(dirname $0)
+cd $CUR_DIR
+WORK_DIR=`pwd`
 LOGDIR=/var/log/<%= @project_name %>
-LOGLEVEL=INFO
-# LOGLEVEL=DEBUG
 
-# init sudo
-sudo echo "" > /dev/null
-
-# create the user if not exists
-# [ `id -u $PROJ_USER 2>/dev/null` ] || echo "$PROJ_USER:$pass123PROJ_USER:::::/usr/sbin/nologin" | sudo newusers
+function try {
+    "$@"
+    code=$?
+    if [ $code -ne 0 ]; then
+        echo "'$1 $2 $3 $4...' did not work: exit status $code"
+        exit 1
+    fi
+}
 
 cmd=$1; ! [ -z "$cmd" ] && shift
 param1=$1; ! [ -z "$param1" ] && shift
 
-checkps=`ps ax | grep gunicorn | grep -v grep | grep -v sudo`
-
 case $cmd in
-    start)
-        if [ -n "$checkps" ]; then
-            echo "gunicorn seems to be already running"
-            exit 133
-        fi
-        sudo chown -R $PROJ_USER: $WORK_DIR
-        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py collectstatic --noinput"
-        DAEMONFLAG="-D"
-        STARTMSG="daemon"
-        [ "$param1" = "--debug" ] && DAEMONFLAG="" && STARTMSG="interactive"
-        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON -W ignore $GUNICORN -c $CUR_DIR/config/gunicorn/gunicorn.conf.py --chdir $WORK_DIR $PROJ_NAME.wsgi:application $DAEMONFLAG"
-        if [ $? -ne 0 ]; then
-            echo "ERROR starting gunicorn"
-            exit 127
-        else
-            echo "Started $STARTMSG"
-        fi
-        # sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $CELERY worker -A $PROJ_NAME.settings.celery_settings -D -Ofair --concurrency=3 --logfile=$LOGDIR/celery.log --pidfile=/tmp/celery_$PROJ_NAME.pid -n common.%h -l $LOGLEVEL -B"
-        sudo service nginx restart
-        ;;
-    stop)
-        if [ -z "$checkps" ]; then
-            echo "gunicorn seems to be already stopped"
-            exit 132
-        fi
-        ps ax | grep gunicorn | grep -v grep | grep -v sudo | awk '{print $1}' | xargs -r sudo kill -9
-        echo "gunicorn killed"
-        ps ax | grep celery | grep -v grep | grep -v sudo | awk '{print $1}' | xargs -r sudo kill -9
-        echo "Celery processes killed"
-        ;;
-    reload)
-        ps ax | grep gunicorn | grep -v grep | grep -v sudo | awk '{print $1}' | xargs -r sudo kill -s HUP
-        ps ax | grep celery | grep -v grep | grep -v sudo | awk '{print $1}' | xargs -r sudo kill -s HUP
-        sudo service nginx reload
-        ;;
-    flower)
-        echo "Starting Flower (interactive!)"
-        FLOWER_SOCKET_FILE=/tmp/modis_flower.socket
-        # fix permissions (600 by default - tornado's issue)
-        sh -c "sleep 3; sudo chmod 666 $FLOWER_SOCKET_FILE" &
-        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $CELERY flower -A $PROJ_NAME.settings.celery_settings --logfile=$LOGDIR/flower.log --pidfile=/tmp/flower.pid -n flower.%h --unix_socket=$FLOWER_SOCKET_FILE"
-        ;;
-    command)
-        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON manage.py $param1 $*"
-        ;;
-    migrate)
-        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py migrate $param1 $*"
-        ;;
-    celery)
-        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $CELERY -A $PROJ_NAME.settings.celery_settings $param1 $*"
-        ;;
-    debug)
-        sudo -i -u $PROJ_USER sh -c "cd $WORK_DIR; $PYTHON $WORK_DIR/manage.py shell_plus $param1 $*"
-        ;;
-    *)
-        echo "ERROR, wrong parameter"
-        exit 1
+build)
+    bash $WORK_DIR/config/build.sh $param1 $*
+    exit $?
+;;
+run)
+    try docker build -f $WORK_DIR/config/docker/Dockerfile-web --tag <%= @project_name %> $WORK_DIR -q
+    try docker-compose -f $WORK_DIR/config/docker/docker-compose-all.yaml up
+    # try docker-compose -f $WORK_DIR/config/docker/docker-compose-all.yaml run --rm <%= @project_name %>-web python3.6 /usr/local/bin/gunicorn -c /opt/<%= @project_name %>/gunicorn.conf.py --chdir /opt <%= @project_name %>.wsgi:application
+;;
+command)
+    try docker-compose -f $WORK_DIR/config/docker/docker-compose-all.yaml run --rm --entrypoint python3.6 <%= @project_name %>-web . $param1 $*
+;;
+shell)
+    try docker-compose -f $WORK_DIR/config/docker/docker-compose-all.yaml run --rm --entrypoint /bin/bash <%= @project_name %>-web
+;;
+*)
+    echo "ERROR, wrong parameter"
+    exit 1
 esac

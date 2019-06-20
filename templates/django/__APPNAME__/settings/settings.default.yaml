@@ -1,0 +1,6 @@
+# All of these settings might be redefined in file /usr/local/etc/APP_NAME.yaml
+
+# REDIS_URL: 'redis://:redispass@brokerhost:6379/8'
+# SEMAPHORES_REDIS_URL: 'redis://:redispass@brokerhost:6379/8'
+# BROKER_URL: "amqp://APP_NAMEadmin:pass@brokerhost:5672/APP_NAME"
+# CELERY_RESULT_BACKEND: "amqp://APP_NAMEadmin:pass@brokerhost:5672/APP_NAME"

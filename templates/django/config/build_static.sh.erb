@@ -1,0 +1,38 @@
+#!/bin/bash
+
+function try {
+    "$@"
+    code=$?
+    if [ $code -ne 0 ]; then
+        echo "'$1 $2 $3 $4...' did not work: exit status $code"
+        exit 1
+    fi
+}
+
+mkdir /var/log/<%= @project_name %>
+touch /usr/local/etc/<%= @project_name %>.yaml
+
+cmd=$1; ! [ -z "$cmd" ] && shift
+
+[ -z "$cmd" ] && cmd="all"
+
+case $cmd in
+all)
+    try npm install
+    try gulp build
+    try python3 <%= @project_name %> collectstatic --noinput
+;;
+quick)
+    try gulp build
+    try python3 <%= @project_name %> collectstatic --noinput
+;;
+shell)
+    bash -l
+;;
+*)
+    echo "ERROR, wrong parameter"
+    exit 1
+esac
+
+
+
